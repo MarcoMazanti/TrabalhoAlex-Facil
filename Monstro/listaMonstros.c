@@ -2,10 +2,11 @@
 #include <string.h>
 #include "listaMonstros.h"
 
+// Função que retorna um monstro aleatório para encontros normais da campanha
 Monstro* campanha() {
-    Monstro *monstro = malloc(sizeof(Monstro));
+    Monstro *monstro = malloc(sizeof(Monstro)); // Aloca espaço para um monstro na memória
 
-    switch (rand() % 3) {
+    switch (rand() % 3) { // Sorteia um dos três monstros possíveis
         case 0:
             strcpy(monstro->name, "Lobo Artico");
             monstro->vida = 18;
@@ -35,11 +36,12 @@ Monstro* campanha() {
             break;
     }
 
-    return monstro;
+    return monstro; // Retorna o monstro sorteado
 }
 
+// Função que retorna um monstro chefe (boss) para batalhas importantes
 Monstro* boss() {
-    Monstro *monstro = malloc(sizeof(Monstro));
+    Monstro *monstro = malloc(sizeof(Monstro)); // Aloca espaço para o chefe
 
     strcpy(monstro->name, "Diabo dos Espinhos");
     monstro->vida = 65;
@@ -52,16 +54,17 @@ Monstro* boss() {
     return monstro;
 }
 
-
-// possível adição futura para batalhar
-//Monstro noivaDoAbismo = {
-//    .name = "Noiva do Abismo",
-//    .vida = 200,
-//    .escudo = 10,
-//    .iniciativa = 20,
-//    .ataque = {
-//        {"Grito do Vazio", "Ataque", 4, 6, 5}, dano alto em área + chance de medo
-//        {"Manto Abissal", "Defesa", 0, 0, 5}, escudo + penalidade para ataques inimigos
-//        {"Sussurro Sombrio", "Cura", 3, 6, 4} recupera vida dela e possivelmente causa dano psíquico em quem está por perto
-//    }
-//};
+// Possível adição futura de boss mais poderoso
+/*
+Monstro noivaDoAbismo = {
+    .name = "Noiva do Abismo",
+    .vida = 200,
+    .escudo = 10,
+    .iniciativa = 20,
+    .ataque = {
+        {"Grito do Vazio", "Ataque", 4, 6, 5},   // Dano em área + chance de causar medo
+        {"Manto Abissal", "Defesa", 0, 0, 5},    // Aumenta escudo e aplica penalidade em inimigos
+        {"Sussurro Sombrio", "Cura", 3, 6, 4}    // Cura a si mesma e pode causar dano psíquico em inimigos
+    }
+};
+*/

@@ -3,8 +3,6 @@
 
 #include "jogador.h"
 
-void armasBarbaro_Paladino(Jogador *jogador);
-void armasFeiticeiro_Mago(Jogador *jogador);
 void gerarArmas(Jogador *jogador);
 
 #endif

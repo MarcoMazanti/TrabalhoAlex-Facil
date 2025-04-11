@@ -4,6 +4,7 @@
 #include "monstro.h"
 #include "listaMonstros.h"
 
+// Zera todos os atributos de um monstro, útil para inicialização ou "reset"
 void zerarMonstro(Monstro *monstro) {
     if (monstro == NULL) return;
 
@@ -21,39 +22,39 @@ void zerarMonstro(Monstro *monstro) {
     }
 }
 
-
-
+// Reduz a vida do monstro ao receber dano. Se a vida zerar, exibe mensagem de morte.
 void receberDanoMonstro(Monstro *monstro, int dano) {
     if (monstro->vida > dano) {
         monstro->vida -= dano;
     } else {
-        strcpy(monstro->name, "");
         monstro->vida = 0;
-        printf("%S morreu!\n");
+        printf("%s morreu!\n", monstro->name);
     }
 }
 
+// Realiza um ataque aleatório do monstro e calcula o dano com base nos dados e atributos
 int ataqueMonstro(Monstro *monstro) {
     int dano = 0, ataque = 0;
-    char repetir = 'N';
+    char repetir = 'S';
 
-    do {
+    while (repetir == 'S') {
         ataque = rand() % 3;
 
-        if (monstro->ataque[ataque].nomeAtaque != "") {
+        if (strcmp(monstro->ataque[ataque].nomeAtaque, "") != 0) {
             repetir = 'N';
             printf("%s usou %s\n", monstro->name, monstro->ataque[ataque].nomeAtaque);
-            dano = monstro->ataque[ataque].quantDado * (rand() % monstro->ataque[ataque].tipoDado) + monstro->ataque[ataque].atributosSomados;
-        } else {
-            repetir = 'S';
+            int dado = (rand() % monstro->ataque[ataque].tipoDado) + 1;
+            dano = monstro->ataque[ataque].quantDado * dado + monstro->ataque[ataque].atributosSomados;
         }
-
-    } while (repetir == 'S');
+    }
 
     return dano;
 }
 
-void criarMonstrosIguais(Monstro *monstro[], char objetivo[], int quantidade) {
+// Cria um vetor de ponteiros para monstros iguais, do tipo "Campanha" ou "Boss"
+void criarMonstrosIguais(Monstro *monstro[], const char objetivo[], int quantidade) {
+    if (quantidade <= 0) return; // Garante que a função não rode com quantidade inválida
+
     for (int i = 0; i < quantidade; i++) {
         if (strcmp(objetivo, "Campanha") == 0) {
             monstro[i] = campanha();

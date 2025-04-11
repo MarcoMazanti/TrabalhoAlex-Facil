@@ -11,24 +11,28 @@ void verificacaoRapidaMonstro(Monstro *monstro);
 int main() {
     srand(time(NULL));
 
+    // Cria os personagens que participarão do RPG
     Jogador jogador, ajudante;
     Monstro *monstroCampanha[3];
 
-    // previne vir algum lixo de memória
+    // Previne vir algum lixo de memória
     zerarJogador(&jogador);
     zerarJogador(&ajudante);
 
+    // Atribui os valores para cada respectivo personagem
     criarMonstrosIguais(monstroCampanha, "Campanha", 3);
 
     criarJogador(&jogador);
     gerarAjudante(&ajudante, &jogador);
 
+    // Verifica se foi criado tudo certo, apenas para o desenvolvimento do código
     verificacaoRapidaPersonagem(&jogador);
     verificacaoRapidaPersonagem(&ajudante);
     for (int i = 0; i < 3; i++) {
         verificacaoRapidaMonstro(monstroCampanha[i]);
     }
 
+    // Início da história do RPG
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("----------O Chamado do Inverno----------\n");
     printf(" O inverno chegou mais cedo este ano, trazendo com ele nao apenas o frio cortante das montanhas,\n"
@@ -40,8 +44,13 @@ int main() {
                  "aventureiro chamado %s, conhecido por suas facanhas, para investigar o ocorrido.\n"
                  "Como a situacao parece perigosa demais para ser enfrentada sozinho, um jovem assistente chamado\n"
                  "%s eh designado para acompanha-lo.\n"
-                 " Com isso, voce e seu novo ajudante partem para investigar o vilarejo vizinho.\n", jogador.name, ajudante.name);
+                 " Com isso, voce e seu novo ajudante partem para investigar o vilarejo vizinho logo apos o\n"
+                 "meio dia.\n", jogador.name, ajudante.name);
     Sleep(17500);
+    printf("A viagem comeca silenciosa, com o vento cortando os rostos e a neve escondendo pegadas antigas.\n"
+                 "Logo, um grupo de %s famintos cruza seu caminho e voces se preparam para essa batalhas.\n", monstroCampanha[0]->name);
+
+    // criar o funcionamento da batalha
 
     return 0;
 }
@@ -84,9 +93,8 @@ void verificacaoRapidaMonstro(Monstro *monstro) {
 }
 
 /*
- * ----------------HISTÓRIA------------------
- * A viagem começa silenciosa, com o vento cortando os rostos e a neve escondendo pegadas antigas.
- * Logo, um grupo de lobos famintos cruza seu caminho — mas não são o bastante para deter a missão.
+ * ----------------CONTINUIDADE DA HISTÓRIA------------------
+ * mas não são o bastante para deter a missão.
  * No entanto, à medida que se aproximam do vilarejo desaparecido, um número anormal de corvos começa
  * a seguir o grupo, soltando grasnados estridentes e incessantes.
  *

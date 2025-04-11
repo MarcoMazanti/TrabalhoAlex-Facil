@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "magia.h"
 
+// Função que retorna um truque aleatório
 Magia truques() {
     Magia listaTruques[] = {
         {"Raio de Gelo", "Ataque", 8, 1},
@@ -16,11 +17,13 @@ Magia truques() {
         {"Empurrao Magico", "Ataque", 6, 1}
     };
 
+    // Calcula o total de truques disponíveis
     int totalTruques = sizeof(listaTruques) / sizeof(listaTruques[0]);
     int indiceAleatorio = rand() % totalTruques;
     return listaTruques[indiceAleatorio];
 }
 
+// Função que retorna uma magia de nível 1 aleatória
 Magia magiaNV1() {
     Magia listaNV1[] = {
         {"Misseis Magicos", "Ataque", 4, 3},
@@ -45,6 +48,7 @@ Magia magiaNV1() {
     return listaNV1[indiceAleatorio];
 }
 
+// Função que retorna uma magia de nível 2 aleatória
 Magia magiaNV2() {
     Magia listaNV2[] = {
         {"Relampago", "Ataque", 8, 3},
@@ -61,6 +65,7 @@ Magia magiaNV2() {
     return listaNV2[indiceAleatorio];
 }
 
+// Função que retorna uma magia de nível 3 aleatória
 Magia magiaNV3() {
     Magia listaNV3[] = {
         {"Bola de Fogo", "Ataque", 6, 6},
@@ -74,7 +79,7 @@ Magia magiaNV3() {
     return listaNV3[indiceAleatorio];
 }
 
-// seleciona os truques e impede de vir algum repetido
+// Seleciona truques aleatórios para o jogador, sem repetição
 void selecaoTruques(Jogador *jogador, int quantTruques) {
     int truquesSelecionados = 0;
 
@@ -82,60 +87,64 @@ void selecaoTruques(Jogador *jogador, int quantTruques) {
         Magia novaMagia = truques();
         int repetida = 0;
 
-        // verifica se já existe esse truque
+        // Verifica se o truque já foi selecionado
         for (int i = 0; i < truquesSelecionados; i++) {
-            if (strcmp(jogador->magia[0][i].nameMagia, novaMagia.nameMagia) == 0) { // compara as duas strings
+            if (strcmp(jogador->magia[0][i].nameMagia, novaMagia.nameMagia) == 0) {
                 repetida = 1;
                 break;
             }
         }
 
-        if (!repetida) { // atribui ao jogador
+        // Se não for repetido, adiciona ao jogador
+        if (!repetida) {
             jogador->magia[0][truquesSelecionados] = novaMagia;
             truquesSelecionados++;
         }
     }
 }
 
-// sorteia magias com base nas porcentagens e do nível máximo
+// Seleciona magias com base em porcentagem e nível máximo permitido
 void selecaoMagias(Jogador *jogador, int quantMagias, int maxNV) {
     int magiasSelecionadas = 0;
 
     while (magiasSelecionadas < quantMagias) {
-        int chance = rand() % 100; // 0 a 99
+        int chance = rand() % 100;
         Magia nova;
 
+        // Seleciona a magia conforme as probabilidades e nível máximo
         if (maxNV == 3) {
             if (chance < 50) {
-                nova = magiaNV1();
+                nova = magiaNV1(); // 50%
             } else if (chance < 85) {
-                nova = magiaNV2();
+                nova = magiaNV2(); // 35%
             } else {
-                nova = magiaNV3();
+                nova = magiaNV3(); // 15%
             }
         } else if (maxNV == 2) {
             if (chance < 65) {
-                nova = magiaNV1();
+                nova = magiaNV1(); // 65%
             } else {
-                nova = magiaNV2();
+                nova = magiaNV2(); // 35%
             }
         } else {
-            nova = magiaNV1();
+            nova = magiaNV1(); // Apenas nível 1 permitido
         }
 
+        // Atribui a magia sorteada ao jogador
         jogador->magia[1][magiasSelecionadas] = nova;
         magiasSelecionadas++;
     }
 }
 
+// Gera magias conforme a classe do jogador
 void gerarMagias(Jogador *jogador) {
-    if (strcmp(jogador->classe, "Feiticeiro") == 0) {       // Feiticeiro - 5 truques - 6 magias
+    if (strcmp(jogador->classe, "Feiticeiro") == 0) {
         selecaoTruques(jogador, 5);
         selecaoMagias(jogador, 6, 3);
-    } else if (strcmp(jogador->classe, "Mago") == 0) {      // Mago - 4 truques - 8 magias
+    } else if (strcmp(jogador->classe, "Mago") == 0) {
         selecaoTruques(jogador, 4);
         selecaoMagias(jogador, 8, 3);
-    } else if (strcmp(jogador->classe, "Paladino") == 0) {  // Paladino - 3 magias
+    } else if (strcmp(jogador->classe, "Paladino") == 0) {
         selecaoMagias(jogador, 3, 2);
     }
 }

@@ -41,3 +41,14 @@
 1892	2121	7661071675277793	TrabalhoAlexFacil.exe	bc589bd46700eea8
 47	1890	7661074507546659	CMakeFiles/TrabalhoAlexFacil.dir/main.c.obj	4650f03b03a6b0e0
 1891	2118	7661074525991099	TrabalhoAlexFacil.exe	bc589bd46700eea8
+64	397	7661152402146668	CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/arma.c.obj	171813609aa463c9
+53	424	7661152402050321	CMakeFiles/TrabalhoAlexFacilLib.dir/Ajudante/ajudante.c.obj	970501d9e12be6bb
+115	426	7661152402672749	CMakeFiles/TrabalhoAlexFacilLib.dir/atacar.c.obj	20773566dec27a5f
+93	427	7661152402450185	CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/listaMonstros.c.obj	61a7f9d281f99651
+129	429	7661152402808216	CMakeFiles/TrabalhoAlexFacilLib.dir/fimJogo.c.obj	fd85dbada8287774
+105	464	7661152402561671	CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/monstro.c.obj	4d82b6105cd69240
+81	2070	7661152402323560	CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/magia.c.obj	6b9091e93c4348eb
+72	2134	7661152402235920	CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/jogador.c.obj	223d9f1544396a61
+138	2155	7661152402897347	CMakeFiles/TrabalhoAlexFacil.dir/main.c.obj	4650f03b03a6b0e0
+2135	2317	7661152422859793	libTrabalhoAlexFacilLib.a	fe64d281367f5fab
+2317	2546	7661152424686208	TrabalhoAlexFacil.exe	bc589bd46700eea8

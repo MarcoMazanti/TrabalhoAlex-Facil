@@ -5,12 +5,15 @@
 #include "arma.h"
 #include "../fimJogo.h"
 
+// Função para zerar todos os dados do jogador, usada ao iniciar ou reiniciar o personagem
 void zerarJogador(Jogador *jogador) {
+    // Reset de strings
     strcpy(jogador->name, "");
     strcpy(jogador->raca, "");
     strcpy(jogador->classe, "");
     jogador->ataqueExtra = 'N';
 
+    // Reset de atributos básicos
     jogador->nivel = 0;
     jogador->vida = 0;
     jogador->dadoVida = 0;
@@ -32,8 +35,8 @@ void zerarJogador(Jogador *jogador) {
         jogador->arma[i].atributosSomados = 0;
     }
 
-    // Zera magias
-    for (int i = 0; i < 2; i++) { // 0 - truques e 1 - magias
+    // Zera magias (truques e magias)
+    for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 10; j++) {
             strcpy(jogador->magia[i][j].nameMagia, "");
             strcpy(jogador->magia[i][j].tipoMagia, "");
@@ -43,10 +46,12 @@ void zerarJogador(Jogador *jogador) {
     }
 }
 
+// Função que calcula o modificador de atributo (baseado em D&D)
 int modificacaoAtributos(int atributo) {
     return (atributo - 10) / 2;
 }
 
+// Função para upar o jogador de nível e ajustar a vida
 void uparNivel(Jogador *jogador, int quantidade) {
     if (jogador->nivel == 0) {
         jogador->vida += jogador->dadoVida + modificacaoAtributos(jogador->constituicao) + 10;
@@ -58,18 +63,21 @@ void uparNivel(Jogador *jogador, int quantidade) {
         jogador->vida += jogador->dadoVida / 2 + modificacaoAtributos(jogador->constituicao) + 1;
     }
     jogador->nivel += quantidade;
+
+    jogador->vidaMax = jogador->vida;
 }
 
+// Função para tratar o recebimento de dano pelo jogador
 void receberDanoJogador(Jogador *jogador, int dano) {
-
     if (jogador->vida > dano) {
         jogador->vida -= dano;
     } else {
         jogador->vida = 0;
-        jogadorMorreu();
+        jogadorMorreu(); // chama função de fim de jogo
     }
 }
 
+// Conta quantas magias de determinado tipo o jogador possui
 int contarMagiasDisponiveis(Jogador *jogador, int tipo) {
     int count = 0;
     for (int i = 0; i < 10; i++) {
@@ -81,16 +89,16 @@ int contarMagiasDisponiveis(Jogador *jogador, int tipo) {
     return count;
 }
 
+// Função que executa um ataque, seja com arma ou magia
 int ataqueJogador(Jogador *jogador) {
     int dano = 0;
     int tipoAtaque = 0, tipoMagia = 0, expecificoAtaque = 0;
     char repetir;
 
+    // Escolha do tipo de ataque
     do {
         printf("Escolha qual tipo de ataque usara:\n");
-        printf("1. Arma\n");
-        printf("2. Magia ou Truque\n");
-        printf("Agora digite qual numero representa o que voce deseja ser:\n>");
+        printf("1. Arma\n2. Magia ou Truque\n>");
         scanf("%d", &tipoAtaque);
 
         if (tipoAtaque < 1 || tipoAtaque > 2) {
@@ -101,6 +109,7 @@ int ataqueJogador(Jogador *jogador) {
         }
     } while (repetir == 'S');
 
+    // Ataque com arma
     if (tipoAtaque == 1) {
         do {
             printf("Escolha com o que irá atacar:\n");
@@ -126,12 +135,11 @@ int ataqueJogador(Jogador *jogador) {
                 dano = somaDados + jogador->arma[expecificoAtaque - 1].atributosSomados;
             }
         } while (repetir == 'S');
-    } else {
+    }
+    // Ataque com magia
+    else {
         do {
-            printf("Escolha se usara um truque ou magia:\n");
-            printf("1. Truque\n");
-            printf("2. Magia\n");
-            printf("Digite sua escolha:\n>");
+            printf("Escolha se usara um truque ou magia:\n1. Truque\n2. Magia\n>");
             scanf("%d", &tipoMagia);
 
             if (tipoMagia < 1 || tipoMagia > 2) {
@@ -171,25 +179,22 @@ int ataqueJogador(Jogador *jogador) {
         } while (repetir == 'S');
     }
 
-    return dano;
+    return dano + 1;
 }
 
+// Função para escolha de raça com bônus específicos
 void escolherRaca(Jogador *jogador) {
     char repetir;
     int respostaRaca;
 
     printf("Atualmente possui 3 racas disponiveis, sendo elas:\n");
     do {
-        printf("1. Anao\n");
-        printf("2. Elfo\n");
-        printf("3. Humano\n");
-        printf("Agora digite qual numero representa o que voce deseja ser:\n>");
+        printf("1. Anao\n2. Elfo\n3. Humano\n>");
         scanf("%d", &respostaRaca);
 
         if (respostaRaca < 1 || respostaRaca > 3) {
             repetir = 'S';
             printf("Voce escolheu uma raca ainda nao cadastrada!\n");
-            printf("Por favor, escolha uma existente:\n");
         } else {
             repetir = 'N';
         }
@@ -197,17 +202,17 @@ void escolherRaca(Jogador *jogador) {
 
     switch (respostaRaca) {
         case 1:
-            strcpy(jogador->raca, "Anao"); // copia o "Anao" para o jogador->raca
+            strcpy(jogador->raca, "Anao");
             jogador->constituicao += 2;
             jogador->forca += 2;
             break;
         case 2:
-            strcpy(jogador->raca, "Elfo"); // copia o "Elfo" para o jogador->raca
+            strcpy(jogador->raca, "Elfo");
             jogador->destreza += 2;
             jogador->sabedoria += 2;
             break;
         case 3:
-            strcpy(jogador->raca, "Humano"); // copia o "Humano" para o jogador->raca
+            strcpy(jogador->raca, "Humano");
             jogador->forca += 1;
             jogador->destreza += 1;
             jogador->constituicao += 1;
@@ -216,29 +221,25 @@ void escolherRaca(Jogador *jogador) {
     }
 }
 
+// Função para escolha de classe com configuração inicial de atributos
 void escolherClasse(Jogador *jogador) {
     char repetir;
     int respostaClasse;
 
-    printf("Atualmente possui 4 classes disponiveis, sendo elas:\n");
+    printf("Atualmente possui 4 classes disponiveis:\n");
     do {
-        printf("1. Barbaro\n");
-        printf("2. Feiticeiro\n");
-        printf("3. Mago\n");
-        printf("4. Paladino\n");
-        printf("Agora digite qual numero representa o que voce deseja ser:\n>");
+        printf("1. Barbaro\n2. Feiticeiro\n3. Mago\n4. Paladino\n>");
         scanf("%d", &respostaClasse);
 
         if (respostaClasse < 1 || respostaClasse > 4) {
             repetir = 'S';
             printf("Voce escolheu uma classe ainda nao cadastrada!\n");
-            printf("Por favor, escolha uma existente:\n");
         } else {
             repetir = 'N';
         }
     } while (repetir == 'S');
 
-    // valores para os atributos 8 - 10 - 12 - 13 - +2
+    // Distribuição de atributos com base na classe
     switch (respostaClasse) {
         case 1:
             strcpy(jogador->classe, "Barbaro");

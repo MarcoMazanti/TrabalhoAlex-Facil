@@ -20,6 +20,6 @@ typedef struct {
 void zerarMonstro(Monstro *monstro);
 void receberDanoMonstro(Monstro *monstro, int dano);
 int ataqueMonstro(Monstro *monstro);
-void criarMonstrosIguais(Monstro *monstro[], char objetivo[], int quantidade);
+void criarMonstrosIguais(Monstro *monstro[], const char objetivo[], int quantidade);
 
 #endif

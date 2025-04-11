@@ -59,12 +59,14 @@ void gerarPaladino(Jogador *ajudante) {
     ajudante->sabedoria += 12;
 }
 
+// Função principal que gera o ajudante com base na classe do jogador principal
 void gerarAjudante(Jogador *ajudante, Jogador *jogador) {
     int possivelClasse;
 
     strcpy(ajudante->name, "Elric");
     gerarHumano(ajudante);
 
+    // Define a classe do ajudante como complementar à do jogador
     if (strcmp(jogador->classe, "Barbaro") == 0 || strcmp(jogador->classe, "Paladino") == 0) {
         possivelClasse = rand() % 2;
         if (possivelClasse == 0) {
@@ -73,6 +75,7 @@ void gerarAjudante(Jogador *ajudante, Jogador *jogador) {
             gerarMago(ajudante);
         }
     } else if (strcmp(jogador->classe, "Feiticeiro") == 0 || strcmp(jogador->classe, "Mago") == 0) {
+        possivelClasse = rand() % 2;
         if (possivelClasse == 0) {
             gerarBarbaro(ajudante);
         } else {
@@ -84,6 +87,7 @@ void gerarAjudante(Jogador *ajudante, Jogador *jogador) {
     gerarArmas(ajudante);
 
     uparNivel(ajudante, 4);
+
     ajudante->iniciativa = modificacaoAtributos(ajudante->destreza);
     ajudante->magiaSomaAtributos = modificacaoAtributos(ajudante->sabedoria);
 }
