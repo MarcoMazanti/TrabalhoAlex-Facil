@@ -1,3 +1,4 @@
+C:/Users/marco/CLionProjects/TrabalhoAlexFacil/cmake-build-debug/CMakeFiles/TrabalhoAlexFacilLib.dir
 C:/Users/marco/CLionProjects/TrabalhoAlexFacil/cmake-build-debug/CMakeFiles/TrabalhoAlexFacil.dir
 C:/Users/marco/CLionProjects/TrabalhoAlexFacil/cmake-build-debug/CMakeFiles/edit_cache.dir
 C:/Users/marco/CLionProjects/TrabalhoAlexFacil/cmake-build-debug/CMakeFiles/rebuild_cache.dir

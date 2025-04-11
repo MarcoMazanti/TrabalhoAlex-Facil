@@ -1,229 +1,112 @@
 #include <stdio.h>
+#include <windows.h>
+#include <time.h>
+#include "Jogador/jogador.h"
+#include "Ajudante/ajudante.h"
+#include "Monstro/monstro.h"
+
+void verificacaoRapidaPersonagem(Jogador *jogador);
+void verificacaoRapidaMonstro(Monstro *monstro);
 
 int main() {
+    srand(time(NULL));
 
-    void limparBuffer() {
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
+    Jogador jogador, ajudante;
+    Monstro *monstroCampanha[3];
+
+    // previne vir algum lixo de memória
+    zerarJogador(&jogador);
+    zerarJogador(&ajudante);
+
+    criarMonstrosIguais(monstroCampanha, "Campanha", 3);
+
+    criarJogador(&jogador);
+    gerarAjudante(&ajudante, &jogador);
+
+    verificacaoRapidaPersonagem(&jogador);
+    verificacaoRapidaPersonagem(&ajudante);
+    for (int i = 0; i < 3; i++) {
+        verificacaoRapidaMonstro(monstroCampanha[i]);
     }
 
-    char heroi[20];
-    char boss[20] = "Python";
-    int raca = 0;
-
-    printf("Digite seu nome de Heroi: ");
-    scanf("%s", heroi);
-
-    printf("\nNo coracao do misterioso Reino de C99, onde os feiticos sao lancados com linhas de codigo e a logica e a maior arma,\n");
-    printf("%s nasceu com um dom raro: o poder de compilar magia pura.\n", heroi);
-    printf("Desde pequeno, treinou nas artes ancestrais do Debugging, dominou os grimorios do ponteiro e aprendeu a invocar funcoes recursivas com precisao cirurgica.\n\n");
-
-    printf("Escolha sua raca:\n");
-    printf("[1] Mago\n[2] Guerreiro\n[3] Elfo\n> ");
-    scanf("%d", &raca);
-
-    switch(raca) {
-        case 1:
-            printf("\nAgora, ja adulto, %s e reconhecido como o mais promissor MAGO do reino.\n", heroi);
-        break;
-        case 2:
-            printf("\nAgora, ja adulto, %s e reconhecido como o mais promissor GUERREIRO do reino.\n", heroi);
-        break;
-        case 3:
-            printf("\nAgora, ja adulto, %s e reconhecido como o mais promissor ELFO do reino.\n", heroi);
-        break;
-        default:
-            printf("\nRaca desconhecida... %s segue como um heroi misterioso.\n", heroi);
-        break;
-    }
-
-    printf("Mas agora, uma nova ameaca surge...\n");
-    printf("A terrivel cobra %s, do reino dos Sem ponto e virgula, esta prestes a destruir tudo com sua sintaxe maleavel e veneno mortal.\n", boss);
-    printf("A batalha epica esta para comecar. Prepare-se!\n\n");
-
-    limparBuffer();
-    printf("Aperte enter para continuar>");
-    getchar();
-
-    printf("O ceu escurece repentinamente...\n");
-    printf("Raios de codigo binario cortam os ceus enquanto a terra treme sob os pes de %s.\n", heroi);
-    printf("A trilha de erros leva ate uma cratera flamejante...\n");
-    printf("De dentro dela, emerge %s, a cobra ancestral dos bugs eternos!\n\n", boss);
-
-    printf("                 /^\\/^\\\n");
-    printf("               _|__|  O|\n");
-    printf("      \\/     /~     \\_/ \\\n");
-    printf("       \\____|__________/  \\\n");
-    printf("              \\_______      \\\n");
-    printf("                      `\\     \\                 \\\n");
-    printf("                        |     |                  \\\n");
-    printf("                       /      /                    \\\n");
-    printf("                      /     /                       \\\n");
-    printf("                    /      /                         \\ \\\n");
-    printf("                   /     /                            \\  \\\n");
-    printf("                 /     /             _----_            \\   \\\n");
-    printf("                /     /           _-~      ~-_         |   |\n");
-    printf("               (      (        _-~    _--_    ~-_     _/   |\n");
-    printf("                \\      ~-____-~    _-~    ~-_    ~-_-~    /\n");
-    printf("                  ~-_           _-~          ~-_       _-~\n");
-    printf("                     ~--______-~                ~-___-~\n");
-
-    printf("%s encara a criatura com olhar firme. Sua raca, sua coragem, sua historia...\n", heroi);
-    printf("Tudo o que viveu o trouxe ate este momento final.\n");
-
-    printf("\nAperte enter para iniciar a batalha contra %s...\n", boss);
-    limparBuffer();
-    getchar();
-
-    printf("\n================ BATALHA DE QUIZ =================\n");
-
-    int hpboss = 100;
-    int hpheroi = 100;
-    int pergunta = 1;
-    char resposta;
-
-    while (hpboss > 0 && hpheroi > 0) {
-        printf("\nHP Heroi: %d | HP Boss: %d\n", hpheroi, hpboss);
-
-        switch (pergunta) {
-            case 1:
-                printf("Qual das alternativas e um tipo de dado em C?\n");
-                printf("A) inteiro\nB) double\nC) palavra\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Voce acertou um ataque de compilacao!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Errou! Python lancou um ataque de 010101\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 2:
-                printf("O que o comando 'scanf' faz?\n");
-                printf("A) Imprime na tela\nB) Le entrada do usuario\nC) Compara dois valores\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Boa! Voce atingiu o boss!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Errou a habilidade!\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 3:
-                printf("Como declarar uma variavel do tipo inteiro?\n");
-                printf("A) int x;\nB) inteiro x;\nC) num x;\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'A' || resposta == 'a') {
-                    printf("Certeiro!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Dano sofrido por erro de sintaxe!\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 4:
-                printf("Qual operador representa 'igual a' em C?\n");
-                printf("A) =\nB) ==\nC) !=\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Voce acertou em cheio!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Voce confundiu o operador!\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 5:
-                printf("Qual a funcao da chave '{' em C?\n");
-                printf("A) Iniciar comentario\nB) Iniciar bloco de codigo\nC) Encerrar programa\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Ataque critico de logica!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Voce se perdeu no codigo...\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 6:
-                printf("Qual o resultado de: 2 + 2 * 2?\n");
-                printf("A) 8\nB) 6\nC) 4\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Voce dominou a precedencia dos operadores!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Erro de logica! Sofreu um contra-ataque!\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 7:
-                printf("O que significa '%%d' dentro do printf?\n");
-                printf("A) Imprimir um char\nB) Imprimir um inteiro\nC) Imprimir um float\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Boa! Comando de ataque eficaz!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Erro de formatacao... dano recebido!\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 8:
-                printf("Qual desses e um operador logico?\n");
-                printf("A) &&\nB) ++\nC) ==\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'A' || resposta == 'a') {
-                    printf("Voce desferiu um golpe de sabedoria!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Confundiu operadores... dano sofrido!\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 9:
-                printf("Qual comando e usado para repetir um bloco pelo menos uma vez?\n");
-                printf("A) for\nB) while\nC) do while\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'C' || resposta == 'c') {
-                    printf("Voce usou um ataque garantido!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("A magia falhou...\n");
-                    hpheroi -= 20;
-                }
-                break;
-            case 10:
-                printf("Como se declara uma variavel float corretamente?\n");
-                printf("A) float x = '2.0';\nB) float x = 2.0;\nC) float x = \"2.0\";\n> ");
-                scanf(" %c", &resposta);
-                if (resposta == 'B' || resposta == 'b') {
-                    printf("Voce dominou os tipos corretamente!\n");
-                    hpboss -= 20;
-                } else {
-                    printf("Declaracao errada... dano sofrido!\n");
-                    hpheroi -= 20;
-                }
-                break;
-        }
-
-        pergunta++;
-        if (pergunta > 10) pergunta = 1;
-    }
-
-    if (hpboss <= 0 && hpheroi > 0) {
-        printf("\n*** VOCE DERROTOU O BOSS PYTHON! ***\n");
-        printf("O reino de C99, por tanto tempo mergulhado na escuridao dos medos e erros de sintaxe,\n");
-        printf("finalmente viu a luz da esperanca brilhar. A ameaca do poderoso Python, que assombrava\n");
-        printf("todas as variaveis e lacos de repeticao, foi vencida por um verdadeiro heroi do codigo.\n");
-        printf("Os compiladores agora cantam hinos de liberdade, e a IDE sorri com orgulho. A paz reina\n");
-        printf("mais uma vez entre os blocos de codigo.\n");
-    } else if (hpheroi <= 0 && hpboss > 0) {
-        printf("\n*** O BOSS PYTHON VENCEU... ***\n");
-        printf("As sombras cobriram o reino de C99. O heroi caiu, e com ele, as ultimas esperancas de\n");
-        printf("um mundo livre de bugs desapareceram...\n");
-    }
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    printf("----------O Chamado do Inverno----------\n");
+    printf(" O inverno chegou mais cedo este ano, trazendo com ele nao apenas o frio cortante das montanhas,\n"
+                 "mas tambem o silencio inquietante que paira sobre as terras do norte. Desde que um estranho objeto\n"
+                 "caiu do ceu sobre o vilarejo vizinho, nenhuma mensagem, nenhuma caravana e nenhum som de vida\n"
+                 "foram ouvidos daquela direcao.\n");
+    Sleep(17500);
+    printf(" Diante da urgencia e do crescente temor entre os moradores, o chefe da vila decide enviar um\n"
+                 "aventureiro chamado %s, conhecido por suas facanhas, para investigar o ocorrido.\n"
+                 "Como a situacao parece perigosa demais para ser enfrentada sozinho, um jovem assistente chamado\n"
+                 "%s eh designado para acompanha-lo.\n"
+                 " Com isso, voce e seu novo ajudante partem para investigar o vilarejo vizinho.\n", jogador.name, ajudante.name);
+    Sleep(17500);
 
     return 0;
 }
+
+void verificacaoRapidaPersonagem(Jogador *jogador) {
+    int quantArmas = 0, quantTruques = 0, quantMagia = 0;
+
+    printf("==================Veficicacao==================\n");
+    printf("Nome : %s - ", jogador->name);
+    printf("Nivel : %d \n", jogador->nivel);
+    printf("Raca : %s - ", jogador->raca);
+    printf("Classe : %s\n", jogador->classe);
+    printf("Vida : %d - ", jogador->vida);
+    printf("Escudo : %d \n", jogador->escudo);
+
+    for (int i = 0; i < 2; i++) {
+        if (strcmp(jogador->arma[i].nameArma, "") != 0) {
+            quantArmas++;
+        }
+
+        for (int j = 0; j < 10; j++) {
+            if (strcmp(jogador->magia[i][j].nameMagia, "") != 0) {
+                if (i == 0) {
+                    quantTruques++;
+                } else {
+                    quantMagia++;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+    printf("Possui %d armas, %d truques e %d magias.\n\n", quantArmas, quantTruques, quantMagia);
+}
+
+void verificacaoRapidaMonstro(Monstro *monstro) {
+    printf("==================Veficicacao==================\n");
+    printf("Nome : %s\n", monstro->name);
+    printf("Vida : %d - Escudo : %d\n\n", monstro->vida, monstro->escudo);
+}
+
+/*
+ * ----------------HISTÓRIA------------------
+ * A viagem começa silenciosa, com o vento cortando os rostos e a neve escondendo pegadas antigas.
+ * Logo, um grupo de lobos famintos cruza seu caminho — mas não são o bastante para deter a missão.
+ * No entanto, à medida que se aproximam do vilarejo desaparecido, um número anormal de corvos começa
+ * a seguir o grupo, soltando grasnados estridentes e incessantes.
+ *
+ * Quando finalmente alcançam a praça central, a cena é desoladora: no centro, cravado na terra congelada,
+ * está um monólito negro rachado, envolto em uma aura pulsante. Dois Diabos dos Espinhos, feridos e
+ * marcados com coleiras de energia mágica, arranham a superfície da pedra como se fossem compelidos a isso.
+ *
+ * Um deslize do assistente quebra o silêncio e inicia uma batalha brutal. Os dois demônios são derrotados,
+ * mas o jovem ajudante cai em combate. No último suspiro de um dos diabos, uma última magia é lançada
+ * contra o monólito, abrindo uma rachadura profunda.
+ *
+ * Mana pura escapa da pedra, revelando inscrições que até então estavam ocultas. O aventureiro se aproxima e lê:
+ *
+ * "Chamas do vazio, atendam ao chamado.
+ * Que a oferenda de sangue abra o caminho."
+ *
+ * A rachadura cresce. A pedra se parte. Um círculo mágico se forma no céu, e então... ela surge.
+ *
+ * A Noiva do Abismo, uma entidade envolta em véus negros e gelo eterno, desce dos céus com um grito que
+ * ecoa pela alma. Ela não ataca. Ela apenas observa, se apresenta ao mundo... e parte voando para o desconhecido.
+ *
+ * O verdadeiro terror, no entanto, está apenas começando.
+ */

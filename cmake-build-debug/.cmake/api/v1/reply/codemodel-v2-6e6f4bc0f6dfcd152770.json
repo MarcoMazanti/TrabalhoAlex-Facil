@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "TrabalhoAlexFacil",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -39,8 +41,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "TrabalhoAlexFacil::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-TrabalhoAlexFacil-Debug-0ff1fa3e544d075ab9ee.json",
+					"jsonFile" : "target-TrabalhoAlexFacil-Debug-c8dbc4a4a84cf4ceb9b8.json",
 					"name" : "TrabalhoAlexFacil",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "TrabalhoAlexFacilLib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-TrabalhoAlexFacilLib-Debug-ab14f50db555c9c8ff99.json",
+					"name" : "TrabalhoAlexFacilLib",
 					"projectIndex" : 0
 				}
 			]
