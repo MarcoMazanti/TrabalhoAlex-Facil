@@ -3,7 +3,6 @@
 #include "jogador.h"
 #include "magia.h"
 #include "arma.h"
-#include "../fimJogo.h"
 
 // Função para zerar todos os dados do jogador, usada ao iniciar ou reiniciar o personagem
 void zerarJogador(Jogador *jogador) {
@@ -12,6 +11,7 @@ void zerarJogador(Jogador *jogador) {
     strcpy(jogador->raca, "");
     strcpy(jogador->classe, "");
     jogador->ataqueExtra = 'N';
+    jogador->debuff = 'N';
 
     // Reset de atributos básicos
     jogador->nivel = 0;
@@ -69,11 +69,21 @@ void uparNivel(Jogador *jogador, int quantidade) {
 
 // Função para tratar o recebimento de dano pelo jogador
 void receberDanoJogador(Jogador *jogador, int dano) {
-    if (jogador->vida > dano) {
-        jogador->vida -= dano;
-    } else {
-        jogador->vida = 0;
-        jogadorMorreu(); // chama função de fim de jogo
+    if (dano > 0) {
+        if (jogador->vida > dano) {
+            jogador->vida -= dano;
+        } else {
+            jogador->vida = 0;
+            if (jogador->name != "Elric") {
+                printf("\n!!!Jogador Morreu!!!\n");
+                printf("Tente novamente, mas seja uma cuidadoso da próxima vez!\n");
+                exit(0);
+            } else {
+                printf("%s morreu!\n", jogador->name);
+            }
+        }
+    } else if (dano == 0) {
+        jogador->debuff = 'S';
     }
 }
 
@@ -89,97 +99,135 @@ int contarMagiasDisponiveis(Jogador *jogador, int tipo) {
     return count;
 }
 
-// Função que executa um ataque, seja com arma ou magia
+// Função para o menu principal de ataque
+int menuTipoAtaque(Jogador *jogador) {
+    int tipoAtaque;
+inicio_menu_tipo:
+    printf("Escolha qual tipo de ataque usara (0 para cancelar):\n");
+    printf("1. Arma\n2. Magia ou Truque\n> ");
+    scanf("%d", &tipoAtaque);
+
+    if (tipoAtaque == 0) return 0;
+    if (tipoAtaque < 1 || tipoAtaque > 2) {
+        printf("Voce escolheu tipo inexistente!\n");
+        goto inicio_menu_tipo;
+    }
+
+    return tipoAtaque;
+}
+
+int menuArma(Jogador *jogador) {
+    int especificoAtaque;
+inicio_menu_arma:
+    printf("Escolha com o que ira atacar (0 para voltar):\n");
+    for (int i = 0; i < 2; i++) {
+        printf("%d. %s (%dd%d + %d)\n", i + 1,
+               jogador->arma[i].nameArma,
+               jogador->arma[i].quantDados,
+               jogador->arma[i].tipoDado,
+               jogador->arma[i].atributosSomados);
+    }
+    printf("Digite o numero da arma:\n> ");
+    scanf("%d", &especificoAtaque);
+
+    if (especificoAtaque == 0) return -1;
+    if (especificoAtaque < 1 || especificoAtaque > 2) {
+        printf("Escolha invalida!\n");
+        goto inicio_menu_arma;
+    }
+
+    return especificoAtaque - 1;
+}
+
+int menuMagia(Jogador *jogador, int tipoMagia) {
+    int especificoAtaque;
+    int maxMagias = contarMagiasDisponiveis(jogador, tipoMagia - 1);
+
+inicio_menu_magia:
+    printf("Escolha com o que ira atacar (0 para voltar):\n");
+    for (int i = 0; i < maxMagias; i++) {
+        printf("%d. %s (%dd%d + %d)\n",
+               i + 1,
+               jogador->magia[tipoMagia - 1][i].nameMagia,
+               jogador->magia[tipoMagia - 1][i].quantDados,
+               jogador->magia[tipoMagia - 1][i].tipoDado,
+               jogador->magiaSomaAtributos);
+    }
+    printf("Digite o numero da magia:\n> ");
+    scanf("%d", &especificoAtaque);
+
+    if (especificoAtaque == 0) return -1;
+    if (especificoAtaque < 1 || especificoAtaque > maxMagias) {
+        printf("Escolha invalida!\n");
+        goto inicio_menu_magia;
+    }
+
+    return especificoAtaque - 1;
+}
+
 int ataqueJogador(Jogador *jogador) {
-    int dano = 0;
-    int tipoAtaque = 0, tipoMagia = 0, expecificoAtaque = 0;
-    char repetir;
+    int tipoAtaque, tipoMagia, index, dano = 0;
 
-    // Escolha do tipo de ataque
-    do {
-        printf("Escolha qual tipo de ataque usara:\n");
-        printf("1. Arma\n2. Magia ou Truque\n>");
-        scanf("%d", &tipoAtaque);
+menu_principal:
+    tipoAtaque = menuTipoAtaque(jogador);
 
-        if (tipoAtaque < 1 || tipoAtaque > 2) {
-            repetir = 'S';
-            printf("Voce escolheu tipo inexistente!\n");
-        } else {
-            repetir = 'N';
-        }
-    } while (repetir == 'S');
+    if (tipoAtaque == 0) {
+        printf("Voce cancelou o ataque e pode tentar novamente.\n");
+        goto menu_principal;
+    }
 
-    // Ataque com arma
     if (tipoAtaque == 1) {
-        do {
-            printf("Escolha com o que irá atacar:\n");
-            for (int i = 0; i < 2; i++) {
-                printf("%d. %s (%dd%d + %d)\n", i + 1,
-                       jogador->arma[i].nameArma,
-                       jogador->arma[i].quantDados,
-                       jogador->arma[i].tipoDado,
-                       jogador->arma[i].atributosSomados);
-            }
-            printf("Digite o número da arma:\n>");
-            scanf("%d", &expecificoAtaque);
+        index = menuArma(jogador);
+        if (index == -1) goto menu_principal;
 
-            if (expecificoAtaque < 1 || expecificoAtaque > 2) {
-                repetir = 'S';
-                printf("Escolha inválida!\n");
-            } else {
-                repetir = 'N';
-                int somaDados = 0;
-                for (int i = 0; i < jogador->arma[expecificoAtaque - 1].quantDados; i++) {
-                    somaDados += (rand() % jogador->arma[expecificoAtaque - 1].tipoDado) + 1;
-                }
-                dano = somaDados + jogador->arma[expecificoAtaque - 1].atributosSomados;
-            }
-        } while (repetir == 'S');
-    }
-    // Ataque com magia
-    else {
-        do {
-            printf("Escolha se usara um truque ou magia:\n1. Truque\n2. Magia\n>");
-            scanf("%d", &tipoMagia);
+        int somaDados = 0;
+        for (int i = 0; i < jogador->arma[index].quantDados; i++) {
+            somaDados += (rand() % jogador->arma[index].tipoDado) + 1;
+        }
 
-            if (tipoMagia < 1 || tipoMagia > 2) {
-                repetir = 'S';
-                printf("Tipo inválido!\n");
-            } else {
-                repetir = 'N';
-            }
-        } while (repetir == 'S');
+        dano = somaDados + jogador->arma[index].atributosSomados;
+        printf("Dano causado com %s: %d\n", jogador->arma[index].nameArma, dano);
+        return dano;
 
-        int maxMagias = contarMagiasDisponiveis(jogador, tipoMagia - 1);
+    } else if (tipoAtaque == 2) {
+    menu_tipo_magia:
+        printf("Escolha se usara um truque ou magia (0 para voltar):\n");
+        printf("1. Truque\n2. Magia\n> ");
+        scanf("%d", &tipoMagia);
 
-        do {
-            printf("Escolha com o que irá atacar:\n");
-            for (int i = 0; i < maxMagias; i++) {
-                printf("%d. %s (%dd%d + %d)\n",
-                       i + 1,
-                       jogador->magia[tipoMagia - 1][i].nameMagia,
-                       jogador->magia[tipoMagia - 1][i].quantDados,
-                       jogador->magia[tipoMagia - 1][i].tipoDado,
-                       jogador->magiaSomaAtributos);
-            }
-            printf("Digite o número da magia:\n>");
-            scanf("%d", &expecificoAtaque);
+        if (tipoMagia == 0) goto menu_principal;
+        if (tipoMagia < 1 || tipoMagia > 2) {
+            printf("Escolha invalida!\n");
+            goto menu_tipo_magia;
+        }
 
-            if (expecificoAtaque < 1 || expecificoAtaque > maxMagias) {
-                repetir = 'S';
-                printf("Escolha inválida!\n");
-            } else {
-                repetir = 'N';
-                int somaDados = 0;
-                for (int i = 0; i < jogador->magia[tipoMagia - 1][expecificoAtaque - 1].quantDados; i++) {
-                    somaDados += (rand() % jogador->magia[tipoMagia - 1][expecificoAtaque - 1].tipoDado) + 1;
-                }
-                dano = somaDados + jogador->magiaSomaAtributos;
-            }
-        } while (repetir == 'S');
+        index = menuMagia(jogador, tipoMagia);
+        if (index == -1) goto menu_principal;
+
+        Magia magia = jogador->magia[tipoMagia - 1][index];
+
+        int somaDados = 0;
+        for (int i = 0; i < magia.quantDados; i++) {
+            somaDados += (rand() % magia.tipoDado) + 1;
+        }
+
+        dano = somaDados + jogador->magiaSomaAtributos;
+
+        if (strcmp(magia.tipoMagia, "Defesa") == 0) {
+            printf("Voce usou %s e deixou o alvo em desvantagem.\n", magia.nameMagia);
+            dano = 0;
+        } else if (strcmp(magia.tipoMagia, "Cura") == 0) {
+            jogador->vida += dano;
+            printf("Voce usou %s e curou %d pontos de vida!\n", magia.nameMagia, dano);
+            dano = -1;
+        } else {
+            printf("Dano causado com %s: %d\n", magia.nameMagia, dano);
+        }
+
+        return dano;
     }
 
-    return dano + 1;
+    goto menu_principal;  // Segurança extra
 }
 
 // Função para escolha de raça com bônus específicos

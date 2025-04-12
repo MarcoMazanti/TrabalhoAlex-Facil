@@ -55,6 +55,18 @@ build CMakeFiles/TrabalhoAlexFacilLib.dir/Ajudante/ajudante.c.obj: C_COMPILER__T
   OBJECT_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
   OBJECT_FILE_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir\Ajudante
 
+build CMakeFiles/TrabalhoAlexFacilLib.dir/Batalha/atacar.c.obj: C_COMPILER__TrabalhoAlexFacilLib_unscanned_Debug C$:/Users/marco/CLionProjects/TrabalhoAlexFacil/Batalha/atacar.c || cmake_object_order_depends_target_TrabalhoAlexFacilLib
+  DEP_FILE = CMakeFiles\TrabalhoAlexFacilLib.dir\Batalha\atacar.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
+  OBJECT_FILE_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir\Batalha
+
+build CMakeFiles/TrabalhoAlexFacilLib.dir/Batalha/batalha.c.obj: C_COMPILER__TrabalhoAlexFacilLib_unscanned_Debug C$:/Users/marco/CLionProjects/TrabalhoAlexFacil/Batalha/batalha.c || cmake_object_order_depends_target_TrabalhoAlexFacilLib
+  DEP_FILE = CMakeFiles\TrabalhoAlexFacilLib.dir\Batalha\batalha.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
+  OBJECT_FILE_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir\Batalha
+
 build CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/arma.c.obj: C_COMPILER__TrabalhoAlexFacilLib_unscanned_Debug C$:/Users/marco/CLionProjects/TrabalhoAlexFacil/Jogador/arma.c || cmake_object_order_depends_target_TrabalhoAlexFacilLib
   DEP_FILE = CMakeFiles\TrabalhoAlexFacilLib.dir\Jogador\arma.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always
@@ -85,12 +97,6 @@ build CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/monstro.c.obj: C_COMPILER__Tra
   OBJECT_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
   OBJECT_FILE_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir\Monstro
 
-build CMakeFiles/TrabalhoAlexFacilLib.dir/atacar.c.obj: C_COMPILER__TrabalhoAlexFacilLib_unscanned_Debug C$:/Users/marco/CLionProjects/TrabalhoAlexFacil/atacar.c || cmake_object_order_depends_target_TrabalhoAlexFacilLib
-  DEP_FILE = CMakeFiles\TrabalhoAlexFacilLib.dir\atacar.c.obj.d
-  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
-  OBJECT_FILE_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
-
 build CMakeFiles/TrabalhoAlexFacilLib.dir/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c.obj: C_COMPILER__TrabalhoAlexFacilLib_unscanned_Debug C$:/Users/marco/CLionProjects/TrabalhoAlexFacil/cmake-build-debug/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c || cmake_object_order_depends_target_TrabalhoAlexFacilLib
   DEP_FILE = CMakeFiles\TrabalhoAlexFacilLib.dir\CMakeFiles\3.30.5\CompilerIdC\CMakeCCompilerId.c.obj.d
   FLAGS = -g -std=gnu99 -fdiagnostics-color=always
@@ -111,7 +117,7 @@ build CMakeFiles/TrabalhoAlexFacilLib.dir/fimJogo.c.obj: C_COMPILER__TrabalhoAle
 #############################################
 # Link the static library libTrabalhoAlexFacilLib.a
 
-build libTrabalhoAlexFacilLib.a: C_STATIC_LIBRARY_LINKER__TrabalhoAlexFacilLib_Debug CMakeFiles/TrabalhoAlexFacilLib.dir/Ajudante/ajudante.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/arma.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/jogador.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/magia.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/listaMonstros.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/monstro.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/atacar.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/fimJogo.c.obj
+build libTrabalhoAlexFacilLib.a: C_STATIC_LIBRARY_LINKER__TrabalhoAlexFacilLib_Debug CMakeFiles/TrabalhoAlexFacilLib.dir/Ajudante/ajudante.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Batalha/atacar.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Batalha/batalha.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/arma.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/jogador.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/magia.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/listaMonstros.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/Monstro/monstro.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c.obj CMakeFiles/TrabalhoAlexFacilLib.dir/fimJogo.c.obj
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = CMakeFiles\TrabalhoAlexFacilLib.dir
   POST_BUILD = cd .

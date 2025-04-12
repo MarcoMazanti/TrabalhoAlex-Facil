@@ -58,7 +58,8 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				9
 			]
 		}
 	],
@@ -84,7 +85,8 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				9
 			]
 		}
 	],
@@ -94,6 +96,18 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Ajudante/ajudante.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Batalha/atacar.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Batalha/batalha.c",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -124,12 +138,6 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Monstro/monstro.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "atacar.c",
 			"sourceGroupIndex" : 0
 		},
 		{

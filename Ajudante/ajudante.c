@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "ajudante.h"
@@ -57,6 +58,42 @@ void gerarPaladino(Jogador *ajudante) {
     ajudante->destreza += 8;
     ajudante->constituicao += 10;
     ajudante->sabedoria += 12;
+}
+
+int ataqueAjudante(Jogador *ajudante) {
+    int dano = 0;
+
+        if (strcmp(ajudante->classe, "Barbaro") == 0 || strcmp(ajudante->classe, "Paladino") == 0) {
+            // Ataca com arma
+            int arma = rand() % 2;
+            dano = ajudante->arma[arma].quantDados * (rand() % ajudante->arma[arma].quantDados) + ajudante->arma[arma].atributosSomados + 1;
+            if (ajudante->ataqueExtra == 'S') {
+                dano *= 2;
+            }
+        } else {
+            // Ataca com magia
+            int tipoMagia = rand() % 2;
+            int magia = rand() % contarMagiasDisponiveis(ajudante, tipoMagia);
+
+            // devo levar em conta o tipo de magia Ataque / Defesa / Cura
+            int somaDados = 0;
+            for (int i = 0; i < ajudante->magia[tipoMagia][magia].quantDados; i++) {
+                somaDados += (rand() % ajudante->magia[tipoMagia][magia].tipoDado) + 1;
+            }
+            dano = somaDados + ajudante->magiaSomaAtributos;
+
+            if (strcmp(ajudante->magia[tipoMagia][magia].tipoMagia, "Defesa") == 0) {
+                printf("O %s usou %s e deixou o alvo em desvantagem.\n", ajudante->name, ajudante->magia[tipoMagia][magia].nameMagia, dano);
+                dano = 0;
+            } else if (strcmp(ajudante->magia[tipoMagia][magia].tipoMagia, "Cura") == 0) {
+                ajudante->vida += dano;
+                printf("O %s usou %s e curou %d pontos de vida!\n", ajudante->name, ajudante->magia[tipoMagia][magia].nameMagia, dano);
+                dano = -1;
+            } else {
+                printf("Dano causado com %s : %d\n", ajudante->magia[tipoMagia][magia].nameMagia, dano);
+            }
+        }
+    return dano;
 }
 
 // Função principal que gera o ajudante com base na classe do jogador principal

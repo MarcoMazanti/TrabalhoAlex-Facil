@@ -9,6 +9,7 @@ void zerarMonstro(Monstro *monstro) {
     if (monstro == NULL) return;
 
     strcpy(monstro->name, "");
+    monstro->debuff = 'N';
     monstro->vida = 0;
     monstro->escudo = 0;
     monstro->iniciativa = 0;
@@ -24,11 +25,15 @@ void zerarMonstro(Monstro *monstro) {
 
 // Reduz a vida do monstro ao receber dano. Se a vida zerar, exibe mensagem de morte.
 void receberDanoMonstro(Monstro *monstro, int dano) {
-    if (monstro->vida > dano) {
-        monstro->vida -= dano;
-    } else {
-        monstro->vida = 0;
-        printf("%s morreu!\n", monstro->name);
+    if (dano > 0) {
+        if (monstro->vida > dano) {
+            monstro->vida -= dano;
+        } else {
+            monstro->vida = 0;
+            printf("\n%s morreu!\n", monstro->name);
+        }
+    } else if (dano == 0) {
+        monstro->debuff = 'S';
     }
 }
 
@@ -45,6 +50,17 @@ int ataqueMonstro(Monstro *monstro) {
             printf("%s usou %s\n", monstro->name, monstro->ataque[ataque].nomeAtaque);
             int dado = (rand() % monstro->ataque[ataque].tipoDado) + 1;
             dano = monstro->ataque[ataque].quantDado * dado + monstro->ataque[ataque].atributosSomados;
+
+            if (strcmp(monstro->ataque[ataque].tipoAtaque, "Defesa") == 0) {
+                printf("O %s usou %s e deixou o alvo em desvantagem.\n", monstro->name, monstro->ataque[ataque].nomeAtaque);
+                dano = 0;   // Causa debuff
+            } else if (strcmp(monstro->ataque[ataque].tipoAtaque, "Cura") == 0) {
+                monstro->vida += dano;
+                printf("O %s usou %s e curou %d de vida.\n", monstro->name, monstro->ataque[ataque].nomeAtaque, dano);
+                dano = -1;  // É ignorado
+            } else {
+                printf("Dano causado com %s: %d\n", monstro->ataque[ataque].nomeAtaque, dano);
+            }
         }
     }
 
@@ -53,13 +69,41 @@ int ataqueMonstro(Monstro *monstro) {
 
 // Cria um vetor de ponteiros para monstros iguais, do tipo "Campanha" ou "Boss"
 void criarMonstrosIguais(Monstro *monstro[], const char objetivo[], int quantidade) {
-    if (quantidade <= 0) return; // Garante que a função não rode com quantidade inválida
+    if (quantidade <= 0) return;
+
+    Monstro *modelo = NULL;
+
+    // Cria apenas UM monstro base
+    if (strcmp(objetivo, "Campanha") == 0) {
+        modelo = campanha();
+    } else if (strcmp(objetivo, "Boss") == 0) {
+        modelo = boss();
+    }
+
+    // Usa o modelo para preencher todos os monstros
+    for (int i = 0; i < quantidade; i++) {
+        monstro[i] = malloc(sizeof(Monstro));
+        if (monstro[i] != NULL && modelo != NULL) {
+            memcpy(monstro[i], modelo, sizeof(Monstro));
+        }
+    }
+
+    // Libera o modelo após copiar (opcional, se não for usado em outro lugar)
+    if (modelo != NULL) {
+        free(modelo);
+    }
+}
+
+void criarMonstrosDiferentes(Monstro *monstro[], const char objetivo[], int quantidade) {
+    if (quantidade <= 0) return;
 
     for (int i = 0; i < quantidade; i++) {
         if (strcmp(objetivo, "Campanha") == 0) {
-            monstro[i] = campanha();
+            monstro[i] = campanha(); // cada chamada gera um monstro diferente
         } else if (strcmp(objetivo, "Boss") == 0) {
-            monstro[i] = boss();
+            monstro[i] = boss(); // idem
+        } else {
+            monstro[i] = NULL; // segurança em caso de erro
         }
     }
 }

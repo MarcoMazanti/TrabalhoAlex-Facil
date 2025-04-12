@@ -20,6 +20,7 @@ typedef struct {
     char raca[50];
     char classe[50];
     char ataqueExtra;
+    char debuff;
     int nivel;
     int vida;
     int vidaMax;
@@ -41,6 +42,7 @@ void zerarJogador(Jogador *jogador);
 int modificacaoAtributos(int atributo);
 void uparNivel(Jogador *jogador, int quantidade);
 void receberDanoJogador(Jogador *jogador, int dano);
+int contarMagiasDisponiveis(Jogador *jogador, int tipo);
 int ataqueJogador(Jogador *jogador);
 void criarJogador(Jogador *jogador);
 

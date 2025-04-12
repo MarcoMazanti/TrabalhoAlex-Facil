@@ -11,7 +11,7 @@ Monstro* campanha() {
             strcpy(monstro->name, "Lobo Artico");
             monstro->vida = 18;
             monstro->escudo = 11;
-            monstro->iniciativa = 14;
+            monstro->iniciativa = 0;
             monstro->ataque[0] = (Ataque){"Mordida Agil", "Ataque", 1, 6, 2};
             monstro->ataque[1] = (Ataque){"Investida Nevasca", "Ataque", 1, 4, 3};
             monstro->ataque[2] = (Ataque){"Uivo de Alerta", "Defesa", 0, 0, 0};
@@ -20,7 +20,7 @@ Monstro* campanha() {
             strcpy(monstro->name, "Corrupto de Gelo");
             monstro->vida = 26;
             monstro->escudo = 15;
-            monstro->iniciativa = 15;
+            monstro->iniciativa = 1;
             monstro->ataque[0] = (Ataque){"Lanca de Gelo", "Ataque", 2, 6, 3};
             monstro->ataque[1] = (Ataque){"Nevoa Congelante", "Defesa", 3, 4, 1};
             monstro->ataque[2] = (Ataque){"Explosao Invernal", "Ataque", 3, 6, 2};
@@ -29,7 +29,7 @@ Monstro* campanha() {
             strcpy(monstro->name, "Carnical de Gelo");
             monstro->vida = 24;
             monstro->escudo = 13;
-            monstro->iniciativa = 8;
+            monstro->iniciativa = 2;
             monstro->ataque[0] = (Ataque){"Garras Gelidas", "Ataque", 1, 8, 1};
             monstro->ataque[1] = (Ataque){"Mordida Apodrecida", "Ataque", 1, 6, 2};
             monstro->ataque[2] = (Ataque){"Toque da Necroneve", "Defesa", 2, 4, 0};
@@ -45,8 +45,8 @@ Monstro* boss() {
 
     strcpy(monstro->name, "Diabo dos Espinhos");
     monstro->vida = 65;
-    monstro->escudo = 4;
-    monstro->iniciativa = 12;
+    monstro->escudo = 14;
+    monstro->iniciativa = 5;
     monstro->ataque[0] = (Ataque){"Chicote Espinhoso", "Ataque", 2, 6, 3};
     monstro->ataque[1] = (Ataque){"Rajada Infernal", "Ataque", 3, 4, 2};
     monstro->ataque[2] = (Ataque){"Explosão de Dor", "Ataque", 2, 8, 1};

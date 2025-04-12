@@ -11,6 +11,7 @@ typedef struct {
 
 typedef struct {
   char name[50];
+  char debuff;
   int vida;
   int escudo;
   int iniciativa;
@@ -21,5 +22,6 @@ void zerarMonstro(Monstro *monstro);
 void receberDanoMonstro(Monstro *monstro, int dano);
 int ataqueMonstro(Monstro *monstro);
 void criarMonstrosIguais(Monstro *monstro[], const char objetivo[], int quantidade);
+void criarMonstrosDiferentes(Monstro *monstro[], const char objetivo[], int quantidade);
 
 #endif
