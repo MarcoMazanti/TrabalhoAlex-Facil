@@ -58,8 +58,7 @@
 				5,
 				6,
 				7,
-				8,
-				9
+				8
 			]
 		}
 	],
@@ -85,8 +84,7 @@
 				5,
 				6,
 				7,
-				8,
-				9
+				8
 			]
 		}
 	],
@@ -144,12 +142,6 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "cmake-build-debug/CMakeFiles/3.30.5/CompilerIdC/CMakeCCompilerId.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "fimJogo.c",
 			"sourceGroupIndex" : 0
 		}
 	],

@@ -112,7 +112,6 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                 ultimaLetra = ordemPrincipal[i].name[numMonstro - 1];
                 numMonstro = ultimaLetra - '1'; // índice ajustado
 
-                printf("Vida: %d\n", monstros[numMonstro]->vida);
                 monstroAtaca(monstros[numMonstro], ((rand() % 2) == 0) ? jogador : ajudante);
             }
 

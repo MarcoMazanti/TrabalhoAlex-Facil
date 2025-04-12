@@ -61,8 +61,23 @@ int main() {
         ajudante.vida = ajudante.vidaMax;
 
         printf("\n Apos essa batalha, voces descansam um pouco e logo apos parte para viagem, mas pouco tempo\n"
-                     "depois acaba escurecendo e voces descidem descansar e irem dormir.\n"
-                     " Apos acordarem, voces ja partem em viagem.");
+                     "depois acaba escurecendo e voces descidem descansar e irem dormir.\n");
+
+        if ((rand() % 5) == 0) { // Batalha surpreza
+            printf(" Durante a noite voces acordam com diversos barulhos em volta e percebem que estao sendo\n"
+                         "atacados e entao voces se levantam e se preparam para a luta!\n");
+
+            // Atribui os valores para cada respectivo monstro
+            criarMonstrosDiferentes(monstroCampanha, "Campanha", quantMonstrosCampanha);
+            batalhar(&jogador, &ajudante, monstroCampanha, quantMonstrosCampanha);
+
+            jogador.vida = jogador.vidaMax;
+            ajudante.vida = ajudante.vidaMax;
+
+            printf("\n Apos essa batalha surpreza, voces decidem voltar a dormir afim de descansar.\n");
+        }
+
+        printf(" Apos acordarem, voces ja partem em viagem.");
     }
 
     printf(" A medida que se aproximam do vilarejo desaparecido, um número anormal de corvos começa a seguir o\n"

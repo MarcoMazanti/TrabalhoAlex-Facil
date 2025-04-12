@@ -116,6 +116,7 @@ inicio_menu_tipo:
     return tipoAtaque;
 }
 
+// Função para o menu de armas
 int menuArma(Jogador *jogador) {
     int especificoAtaque;
 inicio_menu_arma:
@@ -139,6 +140,7 @@ inicio_menu_arma:
     return especificoAtaque - 1;
 }
 
+// Função para o menu de magias e truques
 int menuMagia(Jogador *jogador, int tipoMagia) {
     int especificoAtaque;
     int maxMagias = contarMagiasDisponiveis(jogador, tipoMagia - 1);
@@ -165,47 +167,65 @@ inicio_menu_magia:
     return especificoAtaque - 1;
 }
 
+// Função responsável por manusear o tipo de dano gerado
 int ataqueJogador(Jogador *jogador) {
     int tipoAtaque, tipoMagia, index, dano = 0;
 
 menu_principal:
+    // Exibe o menu principal de ataque (arma ou magia/truque)
     tipoAtaque = menuTipoAtaque(jogador);
 
+    // Se o jogador cancelar (digitar 0), volta ao menu principal
     if (tipoAtaque == 0) {
         printf("Voce cancelou o ataque e pode tentar novamente.\n");
         goto menu_principal;
     }
 
+    // Se o jogador escolheu ataque com arma
     if (tipoAtaque == 1) {
-        index = menuArma(jogador);
+        index = menuArma(jogador);  // Mostra o menu de armas
+
+        // Se o jogador escolheu voltar (0), retorna ao menu principal
         if (index == -1) goto menu_principal;
 
+        // Calcula o dano da arma (rolando os dados)
         int somaDados = 0;
         for (int i = 0; i < jogador->arma[index].quantDados; i++) {
             somaDados += (rand() % jogador->arma[index].tipoDado) + 1;
         }
 
         dano = somaDados + jogador->arma[index].atributosSomados;
+
+        // Exibe o dano causado e retorna esse valor
         printf("Dano causado com %s: %d\n", jogador->arma[index].nameArma, dano);
         return dano;
 
     } else if (tipoAtaque == 2) {
     menu_tipo_magia:
+        // Pergunta se será truque (nível 0) ou magia (nível 1+)
         printf("Escolha se usara um truque ou magia (0 para voltar):\n");
         printf("1. Truque\n2. Magia\n> ");
         scanf("%d", &tipoMagia);
 
+        // Se quiser voltar, retorna ao menu principal
         if (tipoMagia == 0) goto menu_principal;
+
+        // Se a escolha for inválida, volta para esse menu
         if (tipoMagia < 1 || tipoMagia > 2) {
             printf("Escolha invalida!\n");
             goto menu_tipo_magia;
         }
 
+        // Mostra o menu de magias do tipo escolhido (truque ou magia)
         index = menuMagia(jogador, tipoMagia);
+
+        // Se quiser voltar do menu de magias, retorna ao menu principal
         if (index == -1) goto menu_principal;
 
+        // Pega a magia escolhida
         Magia magia = jogador->magia[tipoMagia - 1][index];
 
+        // Calcula o dano da magia (rolando os dados)
         int somaDados = 0;
         for (int i = 0; i < magia.quantDados; i++) {
             somaDados += (rand() % magia.tipoDado) + 1;
@@ -213,22 +233,26 @@ menu_principal:
 
         dano = somaDados + jogador->magiaSomaAtributos;
 
+        // Lógica com base no tipo da magia
         if (strcmp(magia.tipoMagia, "Defesa") == 0) {
             printf("Voce usou %s e deixou o alvo em desvantagem.\n", magia.nameMagia);
-            dano = 0;
+            dano = 0;  // Magia de defesa não causa dano
         } else if (strcmp(magia.tipoMagia, "Cura") == 0) {
-            jogador->vida += dano;
+            jogador->vida += dano;  // Recupera a vida do jogador
             printf("Voce usou %s e curou %d pontos de vida!\n", magia.nameMagia, dano);
-            dano = -1;
+            dano = -1;  // Indica cura com valor negativo
         } else {
+            // Magia ofensiva
             printf("Dano causado com %s: %d\n", magia.nameMagia, dano);
         }
 
         return dano;
     }
 
-    goto menu_principal;  // Segurança extra
+    // Segurança: qualquer caminho inválido volta ao menu principal
+    goto menu_principal;
 }
+
 
 // Função para escolha de raça com bônus específicos
 void escolherRaca(Jogador *jogador) {
