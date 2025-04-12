@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <windows.h>
 #include <time.h>
+#include <conio.h>
 #include "Jogador/jogador.h"
 #include "Ajudante/ajudante.h"
 #include "Monstro/monstro.h"
 #include "Batalha/batalha.h"
 
+void pularSleep(int segundos);
 void verificacaoRapidaPersonagem(Jogador *jogador);
 void verificacaoRapidaMonstro(Monstro *monstro);
 
@@ -35,28 +37,35 @@ int main() {
                  "mas tambem o silencio inquietante que paira sobre as terras do norte. Desde que um estranho objeto\n"
                  "caiu do ceu sobre o vilarejo vizinho, nenhuma mensagem, nenhuma caravana e nenhum som de vida\n"
                  "foram ouvidos daquela direcao.\n");
-    Sleep(15000);
+    pularSleep(2);
     printf(" Diante da urgencia e do crescente temor entre os moradores, o chefe da vila decide enviar um\n"
                  "aventureiro chamado %s, conhecido por suas facanhas, para investigar o ocorrido.\n"
                  "Como a situacao parece perigosa demais para ser enfrentada sozinho, um jovem assistente chamado\n"
                  "%s eh designado para acompanha-lo.\n"
                  " Com isso, voce e seu novo ajudante partem para investigar o vilarejo vizinho logo apos o\n"
                  "meio dia.\n", jogador.name, ajudante.name);
-    Sleep(17500);
+    pularSleep(2);
 
-    int quantBatalhas = rand() % 6;
+    int quantBatalhas = 1; //(rand() % 6) + 1;
     for (int i = 0; i < quantBatalhas; i++) {
         printf(" A viagem ocorria silenciosamente, com o vento cortando os rostos e a neve escondendo pegadas\n"
                      "antigas. Logo, um grupo de monstros famintos cruza seu caminho e voces se preparam para essa\n"
                      "batalha.\n");
-        Sleep(17500);
-
-        quantBatalhas++;
+        pularSleep(2);
 
         // Atribui os valores para cada respectivo monstro
         criarMonstrosIguais(monstroCampanha, "Campanha", quantMonstrosCampanha);
         batalhar(&jogador, &ajudante, monstroCampanha, quantMonstrosCampanha);
 
+        // Libera os monstros da campanha anterior antes de mudar o número
+        for (int i = 0; i < quantMonstrosCampanha; i++) {
+            if (monstroCampanha[i] != NULL) {
+                free(monstroCampanha[i]);
+                monstroCampanha[i] = NULL;
+            }
+        }
+
+        quantMonstrosCampanha++;
         jogador.vida = jogador.vidaMax;
         ajudante.vida = ajudante.vidaMax;
 
@@ -80,9 +89,16 @@ int main() {
         printf(" Apos acordarem, voces ja partem em viagem.");
     }
 
+    for (int i = 0; i < quantMonstrosCampanha; i++) {
+        if (monstroCampanha[i] != NULL) {
+            free(monstroCampanha[i]);
+            monstroCampanha[i] = NULL;
+        }
+    }
+
     printf(" A medida que se aproximam do vilarejo desaparecido, um número anormal de corvos começa a seguir o\n"
                  "grupo, soltando grasnados estridentes e incessantes.\n\n");
-    Sleep(10000);
+    pularSleep(1);
     printf(" Conforme chegava na vila, aparecia mais e mais corpos espalhados pelo chao, alguns queimados e\n"
                  "outros com um tipo de espinho enfiados neles e quando finalmente alcancam a praca central, a cena\n"
                  "eh desoladora: no centro, cravado na terra congelada, esta um monolito negro rachado, envolto em\n"
@@ -90,7 +106,7 @@ int main() {
     printf(" Conforme observa essa cena, voces percebem que os dois monstros aparentam estar feridos e com um\n"
                  "tipo de coleiras magiacas em si, mas o mais estranho eh o que eles estão fazendo, eles estão\n"
                  "arranhando aquele monolito, querendo quebra-lo.\n");
-    Sleep(20000);
+    pularSleep(2);
     printf(" Por um pequeno deslize do %s, os monstros percebem que nao estao mais sozinho e partem\n"
                  "para a matar os invasores!!!\n", ajudante.name);
 
@@ -104,24 +120,35 @@ int main() {
                  " Curioso, voce vai ver ler o que estava escrilo: \n\n");
     printf("Chamas do vazio, atendam ao chamado.\n"
                  "Que a oferenda se sangue abra o caminho.\n\n");
-    Sleep(2000);
+    pularSleep(2);
     printf(" Apos terminar de ler, a rachadura comeca a crescer ate que a pedra se parte ao meio e lanca\n"
                  "um enorme circulo magico no ceu, o maior que voce ja tenha ouvido falar ou visto.\n"
                  " E entao, algo comeca a surgir. Uma figura feminina, parecendo uma noiva, mas com um vestido\n"
                  "escuro e rasgado nas pontas.\n");
-    Sleep(12500);
+    pularSleep(2);
     printf(" Conforme surgia essa noiva, mais e mais gelado ficava o local e diversos gritos comecam a surgir\n"
                  "do ceu que ecoam na alma dos vivos e então voce se lembra que ja ouviu falar desse monstro,\n"
                  "um monstro que destruiu cidades por completo, mas achava ate esse ponto que era mentira devido a\n"
                  "tanto tempo que se passava esse boato e nunca ser comprovado, mas se lembrava do nome: \n"
                  " A Noiva do Abismo\n\n");
-    Sleep(12500);
+    pularSleep(2);
     printf(" Voce esta completamente aterrorizado com o que esta acontecendo e observa que a noiva nao esta\n"
                  "atacando, ela apenas observa ao redor como que estivesse se apresentando ao mundo e logo apos\n"
                  "ela parte voando para o desconhecido.\n"
                  " Apenas uma frase passa na sua cabeça agora:\n"
                  " O verdadeiro terror esta apenas comecando!\n");
     return 0;
+}
+
+void pularSleep(int segundos) {
+    for (int i = 0; i < segundos * 10; i++) {
+        if (_kbhit()) {
+            if (getch() == 13) { // 13 é o código ASCII do Enter
+                break;
+            }
+        }
+        Sleep(100);
+    }
 }
 
 void verificacaoRapidaPersonagem(Jogador *jogador) {

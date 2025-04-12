@@ -48,7 +48,7 @@ int ataqueMonstro(Monstro *monstro) {
         if (strcmp(monstro->ataque[ataque].nomeAtaque, "") != 0) {
             repetir = 'N';
             printf("%s usou %s\n", monstro->name, monstro->ataque[ataque].nomeAtaque);
-            int dado = (rand() % monstro->ataque[ataque].tipoDado) + 1;
+            int dado = (rand() % (monstro->ataque[ataque].tipoDado + 1));
             dano = monstro->ataque[ataque].quantDado * dado + monstro->ataque[ataque].atributosSomados;
 
             if (strcmp(monstro->ataque[ataque].tipoAtaque, "Defesa") == 0) {

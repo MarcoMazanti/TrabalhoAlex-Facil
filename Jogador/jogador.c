@@ -74,13 +74,7 @@ void receberDanoJogador(Jogador *jogador, int dano) {
             jogador->vida -= dano;
         } else {
             jogador->vida = 0;
-            if (jogador->name != "Elric") {
-                printf("\n!!!Jogador Morreu!!!\n");
-                printf("Tente novamente, mas seja uma cuidadoso da próxima vez!\n");
-                exit(0);
-            } else {
-                printf("%s morreu!\n", jogador->name);
-            }
+            printf("%s morreu!\n", jogador->name);
         }
     } else if (dano == 0) {
         jogador->debuff = 'S';
@@ -191,7 +185,7 @@ menu_principal:
         // Calcula o dano da arma (rolando os dados)
         int somaDados = 0;
         for (int i = 0; i < jogador->arma[index].quantDados; i++) {
-            somaDados += (rand() % jogador->arma[index].tipoDado) + 1;
+            somaDados += (rand() % (jogador->arma[index].tipoDado + 1));
         }
 
         dano = somaDados + jogador->arma[index].atributosSomados;
@@ -228,7 +222,7 @@ menu_principal:
         // Calcula o dano da magia (rolando os dados)
         int somaDados = 0;
         for (int i = 0; i < magia.quantDados; i++) {
-            somaDados += (rand() % magia.tipoDado) + 1;
+            somaDados += (rand() % (magia.tipoDado + 1));
         }
 
         dano = somaDados + jogador->magiaSomaAtributos;

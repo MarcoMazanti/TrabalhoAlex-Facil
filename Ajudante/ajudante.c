@@ -125,6 +125,7 @@ void gerarAjudante(Jogador *ajudante, Jogador *jogador) {
 
     uparNivel(ajudante, 4);
 
+    ajudante->vida += 10;
     ajudante->iniciativa = modificacaoAtributos(ajudante->destreza);
     ajudante->magiaSomaAtributos = modificacaoAtributos(ajudante->sabedoria);
 }

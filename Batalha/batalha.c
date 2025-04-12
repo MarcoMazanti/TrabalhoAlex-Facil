@@ -115,6 +115,12 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                 monstroAtaca(monstros[numMonstro], ((rand() % 2) == 0) ? jogador : ajudante);
             }
 
+            if (jogador->vida <= 0) {
+                printf("Voce Morreu!!!\n");
+                printf("Jogue melhor da proxima vez!\n");
+                exit(0);
+            }
+
             Sleep(2000);
             printf("\n");
         }

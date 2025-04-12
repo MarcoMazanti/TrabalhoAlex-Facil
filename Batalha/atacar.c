@@ -28,33 +28,37 @@ int debuffMonstro(Monstro *monstro) {
 
 // Função responsável por fazer o jogador atacar o monstro
 void playerAtaca(Jogador *jogador, Monstro *monstro) {
-    if (jogador->debuff == 'S') {
-        if (debuffPlayer(jogador) > monstro->escudo) {
-            receberDanoMonstro(monstro, ataqueJogador(jogador));
+    for (int i = 0; i < 1 + (jogador->ataqueExtra == 'S' ? 1 : 0); i++) {
+        if (jogador->debuff == 'S') {
+            if (debuffPlayer(jogador) > monstro->escudo) {
+                receberDanoMonstro(monstro, ataqueJogador(jogador));
+            } else {
+                printf("%s errou o ataque!\n", jogador->name);
+            }
         } else {
-            printf("%s errou o ataque!\n", jogador->name);
-        }
-    } else {
-        if (((rand() % 20) + jogador->iniciativa + 1) > monstro->escudo) {
-            receberDanoMonstro(monstro, ataqueJogador(jogador));
-        } else {
-            printf("%s errou o ataque!\n", jogador->name);
+            if (((rand() % 20) + jogador->iniciativa + 1) > monstro->escudo) {
+                receberDanoMonstro(monstro, ataqueJogador(jogador));
+            } else {
+                printf("%s errou o ataque!\n", jogador->name);
+            }
         }
     }
 }
 
 void NPCAtaca(Jogador *ajudante, Monstro *monstro) {
-    if (ajudante->debuff == 'S') {
-        if (debuffPlayer(ajudante) > monstro->escudo) {
-            receberDanoMonstro(monstro, ataqueAjudante(ajudante));
+    for (int i = 0; i < 1 + (ajudante->ataqueExtra == 'S' ? 1 : 0); i++) {
+        if (ajudante->debuff == 'S') {
+            if (debuffPlayer(ajudante) > monstro->escudo) {
+                receberDanoMonstro(monstro, ataqueAjudante(ajudante));
+            } else {
+                printf("%s errou o ataque!\n", ajudante->name);
+            }
         } else {
-            printf("%s errou o ataque!\n", ajudante->name);
-        }
-    } else {
-        if (((rand() % 20) + ajudante->iniciativa + 1) > monstro->escudo) {
-            receberDanoMonstro(monstro, ataqueAjudante(ajudante));
-        } else {
-            printf("%s errou o ataque!\n", ajudante->name);
+            if (((rand() % 20) + ajudante->iniciativa + 1) > monstro->escudo) {
+                receberDanoMonstro(monstro, ataqueAjudante(ajudante));
+            } else {
+                printf("%s errou o ataque!\n", ajudante->name);
+            }
         }
     }
 }
