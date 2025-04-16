@@ -6,44 +6,7 @@
 
 // Função para zerar todos os dados do jogador, usada ao iniciar ou reiniciar o personagem
 void zerarJogador(Jogador *jogador) {
-    // Reset de strings
-    strcpy(jogador->name, "");
-    strcpy(jogador->raca, "");
-    strcpy(jogador->classe, "");
-    jogador->ataqueExtra = 'N';
-    jogador->debuff = 'N';
-
-    // Reset de atributos básicos
-    jogador->nivel = 0;
-    jogador->vida = 0;
-    jogador->dadoVida = 0;
-    jogador->escudo = 0;
-    jogador->iniciativa = 0;
-    jogador->dinheiro = 0;
-    jogador->forca = 0;
-    jogador->destreza = 0;
-    jogador->constituicao = 0;
-    jogador->sabedoria = 0;
-    jogador->proficiencia = 0;
-    jogador->magiaSomaAtributos = 0;
-
-    // Zera armas
-    for (int i = 0; i < 2; i++) {
-        strcpy(jogador->arma[i].nameArma, "");
-        jogador->arma[i].tipoDado = 0;
-        jogador->arma[i].quantDados = 0;
-        jogador->arma[i].atributosSomados = 0;
-    }
-
-    // Zera magias (truques e magias)
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 10; j++) {
-            strcpy(jogador->magia[i][j].nameMagia, "");
-            strcpy(jogador->magia[i][j].tipoMagia, "");
-            jogador->magia[i][j].tipoDado = 0;
-            jogador->magia[i][j].quantDados = 0;
-        }
-    }
+    memset(jogador, 0, sizeof(Jogador));
 }
 
 // Função que calcula o modificador de atributo (baseado em D&D)
@@ -74,7 +37,7 @@ void receberDanoJogador(Jogador *jogador, int dano) {
             jogador->vida -= dano;
         } else {
             jogador->vida = 0;
-            printf("%s morreu!\n", jogador->name);
+            printf("%s morreu!\n\n", jogador->name);
         }
     } else if (dano == 0) {
         jogador->debuff = 'S';
@@ -198,7 +161,8 @@ menu_principal:
     menu_tipo_magia:
         // Pergunta se será truque (nível 0) ou magia (nível 1+)
         printf("Escolha se usara um truque ou magia (0 para voltar):\n");
-        printf("1. Truque\n2. Magia\n> ");
+        printf("1. Truque\n2. Magia\n");
+        printf("Digite o que deseja usar :\n> ");
         scanf("%d", &tipoMagia);
 
         // Se quiser voltar, retorna ao menu principal
@@ -219,23 +183,30 @@ menu_principal:
         // Pega a magia escolhida
         Magia magia = jogador->magia[tipoMagia - 1][index];
 
-        // Calcula o dano da magia (rolando os dados)
-        int somaDados = 0;
-        for (int i = 0; i < magia.quantDados; i++) {
-            somaDados += (rand() % (magia.tipoDado + 1));
-        }
-
-        dano = somaDados + jogador->magiaSomaAtributos;
-
         // Lógica com base no tipo da magia
         if (strcmp(magia.tipoMagia, "Defesa") == 0) {
             printf("Voce usou %s e deixou o alvo em desvantagem.\n", magia.nameMagia);
             dano = 0;  // Magia de defesa não causa dano
         } else if (strcmp(magia.tipoMagia, "Cura") == 0) {
+            // Calcula a cura da magia (rolando os dados)
+            int somaDados = 0;
+            for (int i = 0; i < magia.quantDados; i++) {
+                somaDados += (rand() % (magia.tipoDado) + 1);
+            }
+
+            dano = somaDados + jogador->magiaSomaAtributos;
+
             jogador->vida += dano;  // Recupera a vida do jogador
             printf("Voce usou %s e curou %d pontos de vida!\n", magia.nameMagia, dano);
             dano = -1;  // Indica cura com valor negativo
         } else {
+            int somaDados = 0;
+            for (int i = 0; i < magia.quantDados; i++) {
+                somaDados += (rand() % (magia.tipoDado) + 1);
+            }
+
+            dano = somaDados + jogador->magiaSomaAtributos;
+
             // Magia ofensiva
             printf("Dano causado com %s: %d\n", magia.nameMagia, dano);
         }
@@ -247,7 +218,6 @@ menu_principal:
     goto menu_principal;
 }
 
-
 // Função para escolha de raça com bônus específicos
 void escolherRaca(Jogador *jogador) {
     char repetir;
@@ -255,7 +225,8 @@ void escolherRaca(Jogador *jogador) {
 
     printf("Atualmente possui 3 racas disponiveis, sendo elas:\n");
     do {
-        printf("1. Anao\n2. Elfo\n3. Humano\n>");
+        printf("1. Anao\n2. Elfo\n3. Humano\n");
+        printf("Digite o numero que representa o que voce deseja :\n> ");
         scanf("%d", &respostaRaca);
 
         if (respostaRaca < 1 || respostaRaca > 3) {
@@ -294,7 +265,8 @@ void escolherClasse(Jogador *jogador) {
 
     printf("Atualmente possui 4 classes disponiveis:\n");
     do {
-        printf("1. Barbaro\n2. Feiticeiro\n3. Mago\n4. Paladino\n>");
+        printf("1. Barbaro\n2. Feiticeiro\n3. Mago\n4. Paladino\n");
+        printf("Digite o numero que representa o que voce deseja :\n> ");
         scanf("%d", &respostaClasse);
 
         if (respostaClasse < 1 || respostaClasse > 4) {
@@ -355,7 +327,7 @@ void escolherClasse(Jogador *jogador) {
 }
 
 void criarJogador(Jogador *jogador) {
-    printf("Digite o nome para o seu personagem:\n>");
+    printf("Digite o nome para o seu personagem:\n> ");
     fgets(jogador->name, sizeof(jogador->name), stdin);
     jogador->name[strcspn(jogador->name, "\n")] = '\0'; // remove o último \n posto pelo fgets()
     printf("Seja bem vindo %s!\n", jogador->name);

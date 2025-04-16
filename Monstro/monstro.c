@@ -6,21 +6,7 @@
 
 // Zera todos os atributos de um monstro, útil para inicialização ou "reset"
 void zerarMonstro(Monstro *monstro) {
-    if (monstro == NULL) return;
-
-    strcpy(monstro->name, "");
-    monstro->debuff = 'N';
-    monstro->vida = 0;
-    monstro->escudo = 0;
-    monstro->iniciativa = 0;
-
-    for (int i = 0; i < 3; i++) {
-        strcpy(monstro->ataque[i].nomeAtaque, "");
-        strcpy(monstro->ataque[i].tipoAtaque, "");
-        monstro->ataque[i].tipoDado = 0;
-        monstro->ataque[i].quantDado = 0;
-        monstro->ataque[i].atributosSomados = 0;
-    }
+    memset(monstro, 0, sizeof(Monstro));
 }
 
 // Reduz a vida do monstro ao receber dano. Se a vida zerar, exibe mensagem de morte.
@@ -30,7 +16,7 @@ void receberDanoMonstro(Monstro *monstro, int dano) {
             monstro->vida -= dano;
         } else {
             monstro->vida = 0;
-            printf("\n%s morreu!\n", monstro->name);
+            printf("\n%s morreu!\n\n", monstro->name);
         }
     } else if (dano == 0) {
         monstro->debuff = 'S';
@@ -39,27 +25,32 @@ void receberDanoMonstro(Monstro *monstro, int dano) {
 
 // Realiza um ataque aleatório do monstro e calcula o dano com base nos dados e atributos
 int ataqueMonstro(Monstro *monstro) {
-    int dano = 0, ataque = 0;
+    int dano = 0, numAtaque = 0;
     char repetir = 'S';
 
     while (repetir == 'S') {
-        ataque = rand() % 3;
+        numAtaque = rand() % 3;
 
-        if (strcmp(monstro->ataque[ataque].nomeAtaque, "") != 0) {
+        Ataque ataque = monstro->ataque[numAtaque];
+
+        if (strcmp(ataque.nomeAtaque, "") != 0) {
             repetir = 'N';
-            printf("%s usou %s\n", monstro->name, monstro->ataque[ataque].nomeAtaque);
-            int dado = (rand() % (monstro->ataque[ataque].tipoDado + 1));
-            dano = monstro->ataque[ataque].quantDado * dado + monstro->ataque[ataque].atributosSomados;
 
-            if (strcmp(monstro->ataque[ataque].tipoAtaque, "Defesa") == 0) {
-                printf("O %s usou %s e deixou o alvo em desvantagem.\n", monstro->name, monstro->ataque[ataque].nomeAtaque);
+            if (strcmp(ataque.tipoAtaque, "Defesa") == 0) {
+                printf("O %s usou %s e deixou o alvo em desvantagem.\n", monstro->name, ataque.nomeAtaque);
                 dano = 0;   // Causa debuff
-            } else if (strcmp(monstro->ataque[ataque].tipoAtaque, "Cura") == 0) {
+            } else if (strcmp(ataque.tipoAtaque, "Cura") == 0) {
+                int dado = (rand() % (ataque.tipoDado + 1));
+                dano = ataque.quantDado * dado + ataque.atributosSomados;
+
                 monstro->vida += dano;
-                printf("O %s usou %s e curou %d de vida.\n", monstro->name, monstro->ataque[ataque].nomeAtaque, dano);
+                printf("O %s usou %s e curou %d de vida.\n", monstro->name, ataque.nomeAtaque, dano);
                 dano = -1;  // É ignorado
             } else {
-                printf("Dano causado com %s: %d\n", monstro->ataque[ataque].nomeAtaque, dano);
+                int dado = (rand() % (ataque.tipoDado + 1));
+                dano = ataque.quantDado * dado + ataque.atributosSomados;
+
+                printf("Dano causado com %s: %d\n", ataque.nomeAtaque, dano);
             }
         }
     }

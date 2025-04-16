@@ -65,6 +65,15 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
     char ultimaLetra;
     while (aindaHaMonstros(monstros, quantMonstros)) {
         for (int i = 0; i < quantMonstros + 2; i++) {
+
+            int verificar = 0;
+            for (int k = 0; k < quantMonstros; k++) {
+                if (monstros[k]->vida > 0) {
+                    verificar++;
+                }
+            }
+            if (verificar == 0) break;
+
             // Verifica se é jogador e se está morto
             if (strcmp(ordemPrincipal[i].name, jogador->name) == 0 && jogador->vida <= 0) continue;
 
@@ -92,32 +101,65 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
             printf("Agora eh a vez do %s!\n", ordemPrincipal[i].name);
 
             if (strcmp(ordemPrincipal[i].name, jogador->name) == 0) {           // Jogador ataca
-                printf("Vida: %d\n", jogador->vida);
-                printf("Existem esses monstros vivos:\n");
-                for (int i = 0; i < quantMonstros; i++) {
-                    if (monstros[i]->vida > 0) {
-                        printf("%s %d\n", monstros[i]->name, i + 1);
+                for (int j = 0; j < 1 + (jogador->ataqueExtra == 'S' ? 1 : 0); j++) {
+                    if (j > 0) {
+                        if (aindaHaMonstros(monstros, quantMonstros) == 0) {
+                            break;
+                        }
+                        printf("\n%s tem ataque extra!!!\n", jogador->name);
                     }
+                    printf("Vida: %d\n", jogador->vida);
+                    printf("Existem esses monstros vivos:\n");
+                    for (int k = 0; k < quantMonstros; k++) {
+                        if (monstros[k]->vida > 0) {
+                            printf("%s %d\n", monstros[k]->name, k + 1);
+                        }
+                    }
+                    printf("Escolha um para atacar!\n>");
+                    scanf("%d", &numMonstroAtacar);
+                    playerAtaca(jogador, monstros[numMonstroAtacar - 1]);
                 }
-                printf("Escolha um para atacar!\n>");
-                scanf("%d", &numMonstroAtacar);
-                playerAtaca(jogador, monstros[numMonstroAtacar - 1]);
-
             } else if (strcmp(ordemPrincipal[i].name, ajudante->name) == 0) {   // Ajudante ataca
-                printf("Vida: %d\n", ajudante->vida);
-                NPCAtaca(ajudante, monstros[rand() % quantMonstros]);
-
+                for (int j = 0; j < 1 + (ajudante->ataqueExtra == 'S' ? 1 : 0); j++) {
+                    if (j > 0) {
+                        if (aindaHaMonstros(monstros, quantMonstros) == 0) {
+                            break;
+                        }
+                        printf("\n%s tem ataque extra!!!\n", ajudante->name);
+                    }
+                    printf("Vida: %d\n", ajudante->vida);
+                    int NMonstro;
+                    char estaVivo;
+                    do {
+                        NMonstro = rand() % quantMonstros;
+                        if (monstros[NMonstro]->vida <= 0) {
+                            estaVivo = 'N';
+                        } else {
+                            estaVivo = 'S';
+                        }
+                    } while (estaVivo == 'N');
+                    printf("Alvo : %s %d\n", monstros[NMonstro]->name, NMonstro + 1);
+                    NPCAtaca(ajudante, monstros[NMonstro]);
+                }
             } else {                                                            // Monstro[i] ataca
                 numMonstro = strlen(ordemPrincipal[i].name);
                 ultimaLetra = ordemPrincipal[i].name[numMonstro - 1];
                 numMonstro = ultimaLetra - '1'; // índice ajustado
 
-                monstroAtaca(monstros[numMonstro], ((rand() % 2) == 0) ? jogador : ajudante);
+                Jogador *alvo;
+                if (ajudante->vida > 0) {
+                    alvo = ((rand() % 2) == 0) ? jogador : ajudante;
+                } else {
+                    alvo = jogador;
+                }
+                printf("Alvo : %s\n", alvo->name);
+                monstroAtaca(monstros[numMonstro], alvo);
             }
 
             if (jogador->vida <= 0) {
                 printf("Voce Morreu!!!\n");
                 printf("Jogue melhor da proxima vez!\n");
+                Sleep(3000);
                 exit(0);
             }
 

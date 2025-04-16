@@ -130,9 +130,19 @@ void selecaoMagias(Jogador *jogador, int quantMagias, int maxNV) {
             nova = magiaNV1(); // Apenas nível 1 permitido
         }
 
-        // Atribui a magia sorteada ao jogador
-        jogador->magia[1][magiasSelecionadas] = nova;
-        magiasSelecionadas++;
+        int repetida = 0;
+
+        for (int i = 0; i < magiasSelecionadas; i++) {
+            if (strcmp(jogador->magia[1][i].nameMagia, nova.nameMagia) == 0) {
+                repetida = 1;
+                break;
+            }
+        }
+
+        if (!repetida) {
+            jogador->magia[1][magiasSelecionadas] = nova;
+            magiasSelecionadas++;
+        }
     }
 }
 
