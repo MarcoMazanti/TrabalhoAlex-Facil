@@ -73,3 +73,8 @@
 53	2037	7666041277223856	CMakeFiles/TrabalhoAlexFacilLib.dir/Batalha/batalha.c.obj	a5aeb1264ebbf731
 2039	2210	7666041297073996	libTrabalhoAlexFacilLib.a	1361bbcb57034455
 2210	2435	7666041298782745	TrabalhoAlexFacil.exe	bc589bd46700eea8
+75	2192	7666188532253012	CMakeFiles/TrabalhoAlexFacilLib.dir/Desistencia/desistencia.c.obj	ec42c5b497950f41
+82	2194	7666188532329775	CMakeFiles/TrabalhoAlexFacil.dir/main.c.obj	4650f03b03a6b0e0
+64	2223	7666188532153167	CMakeFiles/TrabalhoAlexFacilLib.dir/Batalha/batalha.c.obj	a5aeb1264ebbf731
+2224	2408	7666188553743054	libTrabalhoAlexFacilLib.a	1361bbcb57034455
+2408	2643	7666188555579172	TrabalhoAlexFacil.exe	bc589bd46700eea8

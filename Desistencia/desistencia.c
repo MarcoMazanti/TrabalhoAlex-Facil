@@ -18,7 +18,7 @@ static void fimDoJogo() {
 }
 
 void desistirInicio(){
-    printf("Voce aceita ir nessa aventura?\n");
+    textoColorido("Voce aceita ir nessa aventura?\n", "amarelo", "normal");
     textoColorido("1. Sim\n", "verde", "normal");
     textoColorido("2. Nao\n", "vermelho", "normal");
     printf("> ");
@@ -36,8 +36,8 @@ void desistirInicio(){
 }
 
 void desistirMeio(Jogador *ajudante){
-    printf("Durante a viagem vem uma ideia de desistir da aventura por conta do perigo!\n"
-                 "Voce deside continuar na aventura?\n");
+    printf("Durante a viagem vem uma ideia de desistir da aventura por conta do perigo!\n");
+    textoColorido("Voce deside continuar na aventura?\n", "amarelo", "normal");
     textoColorido("1. Sim\n", "verde", "normal");
     textoColorido("2. Nao\n", "vermelho", "normal");
     printf("> ");
@@ -45,12 +45,23 @@ void desistirMeio(Jogador *ajudante){
     int resposta = verificarEntrada(2, 4, possiveisRespostas, 0);
 
     if (resposta == 2) {
-        printf(" Apos desistir ir embora o %s fica um pouco revoltado, mas segue voce. Durante a noite,\n"
+        if (ajudante->vida > 0) {
+            printf(" Apos decidir ir embora, o %s fica um pouco revoltado, mas segue voce. Durante a noite,\n"
                      "%s decide ficar de vigia, voce aceita um pouco duvidoso, mas aceita.\n"
                      " Entao durante a noite voce eh acordado sendo esfaqueado pelo seu \"ajudante\", e antes\n"
                      "de morrer voce ouve dele:\n", ajudante->name, ajudante->name);
-        printf("Voce eh uma vergonha para o nosso povo, nem deveria ser considerado como um de nos!\n");
-        printf(" Apos isso, seu coracao eh perfurado pela lamina.\n");
+            printf("Voce eh uma vergonha para o nosso povo, nem deveria ser considerado como um de nos!\n");
+            printf(" Apos isso, seu coracao eh perfurado pela lamina.\n");
+        } else {
+            printf(" Apos decidir de ir embora, voce vai para a vila e fala que a situacao estava muito\n"
+                         "perigosa e que resolveu voltar e solicitar que enviassem pessoas mais fortes que voce!\n"
+                         " Com isso o chefe da vila aceita a proposta ao perceber que %s tinha morrido\n"
+                         "Com isso voce recebe um monte de moedas e parte da vila\n", ajudante->name);
+            printf(" Apos um tempo, voce comeca a ouvir um boato que uma vila foi completamente destruida\n"
+                         "e que agora possui uma criatura espalhando o caus naquela regiao e voce lembra que\n"
+                         "era a vila onde voce foi embora.\n");
+        }
+
         fimDoJogo();
         exit(0);
     }

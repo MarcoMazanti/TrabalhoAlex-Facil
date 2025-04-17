@@ -75,7 +75,7 @@ int main() {
 
         (rand() % 3 == 0) ?quantMonstrosCampanha-- : quantMonstrosCampanha++;
         jogador.vida = jogador.vidaMax;
-        ajudante.vida = ajudante.vidaMax;
+        if (ajudante.vida > 0) ajudante.vida = ajudante.vidaMax;
 
         printf("\n Apos essa batalha, voces descansam um pouco e logo apos parte para viagem, mas pouco tempo\n"
                      "depois acaba escurecendo e voces descidem descansar e irem dormir.\n");
@@ -90,7 +90,7 @@ int main() {
             batalhar(&jogador, &ajudante, monstroCampanha, quantMonstrosCampanha);
 
             jogador.vida = jogador.vidaMax;
-            ajudante.vida = ajudante.vidaMax;
+        if (ajudante.vida > 0) ajudante.vida = ajudante.vidaMax;
 
             for (int i = 0; i < quantMonstrosCampanha; i++) {
                 if (monstroCampanha[i] != NULL) {
