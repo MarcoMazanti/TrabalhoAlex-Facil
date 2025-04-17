@@ -144,7 +144,6 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
 
                     // Alocar dinamicamente
                     char **possiveisMonstros = malloc(sizeof(char *) * vivos * 2);
-
                     char texto[50];
                     int idx = 0;
                     for (int k = 0; k < quantMonstros; k++) {
@@ -165,12 +164,14 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
 
                     printf("Escolha um para atacar!\n> ");
                     numMonstroAtacar = verificarEntrada(vivos, vivos * 2, possiveisMonstros, 0);
-
-                    // Verifica se o monstro está realmente vivo (por segurança extra)
-                    if (monstros[numMonstroAtacar - 1]->vida > 0) {
-                        playerAtaca(jogador, monstros[numMonstroAtacar - 1]);
-                    } else {
-                        printf("Esse monstro ja esta morto! Perdeu o ataque!\n");
+                    int verificacao = 0;
+                    for (int k = 0; k < quantMonstros; k++) {
+                        if (monstros[k]->vida > 0) {
+                            verificacao++;
+                            if (verificacao == numMonstroAtacar) {
+                                playerAtaca(jogador, monstros[k]);
+                            }
+                        }
                     }
 
                     // Liberar memória
