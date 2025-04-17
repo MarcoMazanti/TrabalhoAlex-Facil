@@ -3,6 +3,7 @@
 #include "jogador.h"
 #include "magia.h"
 #include "arma.h"
+#include "../Utils/utils.h"
 
 // Função para zerar todos os dados do jogador, usada ao iniciar ou reiniciar o personagem
 void zerarJogador(Jogador *jogador) {
@@ -58,44 +59,80 @@ int contarMagiasDisponiveis(Jogador *jogador, int tipo) {
 
 // Função para o menu principal de ataque
 int menuTipoAtaque(Jogador *jogador) {
-    int tipoAtaque;
+    int tipoAtaque = 0;
 inicio_menu_tipo:
-    printf("Escolha qual tipo de ataque usara (0 para cancelar):\n");
-    printf("1. Arma\n2. Magia ou Truque\n> ");
-    scanf("%d", &tipoAtaque);
-
-    if (tipoAtaque == 0) return 0;
-    if (tipoAtaque < 1 || tipoAtaque > 2) {
-        printf("Voce escolheu tipo inexistente!\n");
-        goto inicio_menu_tipo;
-    }
+    printf("Escolha qual tipo de ataque usara:\n");
+    printf("1. Arma\n2. Truque\n3. Magia\n> ");
+    char *possiveisAtaques[] = {"1", "2", "3", "arma", "truque", "magia", "1. Arma", "2. Truque", "3. Magia"};
+    tipoAtaque = verificarEntrada(3, 9, possiveisAtaques, 0);
 
     return tipoAtaque;
 }
 
+
 // Função para o menu de armas
 int menuArma(Jogador *jogador) {
     int especificoAtaque;
+
 inicio_menu_arma:
     printf("Escolha com o que ira atacar (0 para voltar):\n");
+
+    // Espaço real para as strings
+    static char numero[2][4];             // "1", "2"
+    static char nome[2][50];              // "Espadao", etc.
+    static char completo[2][75];          // "1. Espadao"
+    char *possiveisArmas[6];              // Aponta para as strings acima
+    char texto[75];
+    char parte1[50];
+
     for (int i = 0; i < 2; i++) {
-        printf("%d. %s (%dd%d + %d)\n", i + 1,
-               jogador->arma[i].nameArma,
-               jogador->arma[i].quantDados,
-               jogador->arma[i].tipoDado,
-               jogador->arma[i].atributosSomados);
+        // Cria o texto formatado
+        snprintf(texto, sizeof(texto), "%d. %s (%dd%d + %d)\n", i + 1,
+                 jogador->arma[i].nameArma,
+                 jogador->arma[i].quantDados,
+                 jogador->arma[i].tipoDado,
+                 jogador->arma[i].atributosSomados);
+
+        char *espaco = strstr(texto, " (");
+        char ataque[50];
+        char dados[20];
+        strcpy(dados, espaco + 1);
+        int tamanhoNome = espaco - texto; // posição da substring
+
+        strncpy(ataque, texto, tamanhoNome);   // copia o nome antes de " ("
+        ataque[tamanhoNome] = '\0';
+
+        printf("%s ", ataque);
+        textoColorido(dados, "vermelho", "normal");
+
+        // 1. Número ("1", "2")
+        snprintf(numero[i], sizeof(numero[i]), "%d", i + 1);
+        possiveisArmas[i] = numero[i];
+
+        // 2. Nome da arma ("Espadao", etc.)
+        if (espaco != NULL) {
+            int tamanho = espaco - texto - 3; // Remove "1. " do começo
+            if (tamanho >= sizeof(parte1)) tamanho = sizeof(parte1) - 1;
+            strncpy(parte1, texto + 3, tamanho);
+            parte1[tamanho] = '\0';
+            strncpy(nome[i], parte1, sizeof(nome[i]) - 1);
+            nome[i][sizeof(nome[i]) - 1] = '\0';
+        }
+        possiveisArmas[i + 2] = nome[i];
+
+        // 3. Nome completo ("1. Espadao")
+        snprintf(completo[i], sizeof(completo[i]), "%d. %s", i + 1, jogador->arma[i].nameArma);
+        possiveisArmas[i + 4] = completo[i];
     }
+
     printf("Digite o numero da arma:\n> ");
-    scanf("%d", &especificoAtaque);
+    especificoAtaque = verificarEntrada(2, 6, possiveisArmas, 1);
 
     if (especificoAtaque == 0) return -1;
-    if (especificoAtaque < 1 || especificoAtaque > 2) {
-        printf("Escolha invalida!\n");
-        goto inicio_menu_arma;
-    }
 
     return especificoAtaque - 1;
 }
+
 
 // Função para o menu de magias e truques
 int menuMagia(Jogador *jogador, int tipoMagia) {
@@ -104,39 +141,68 @@ int menuMagia(Jogador *jogador, int tipoMagia) {
 
 inicio_menu_magia:
     printf("Escolha com o que ira atacar (0 para voltar):\n");
+
+    // Espaço real para as strings
+    char numero[maxMagias][4];
+    char nome[maxMagias][50];
+    char completo[maxMagias][75];
+    char *possiveisMagias[maxMagias * 3];  // Aponta para as strings acima
+    char texto[75];
+    char parte1[50];
+
     for (int i = 0; i < maxMagias; i++) {
-        printf("%d. %s (%dd%d + %d)\n",
+        snprintf(texto, sizeof(texto),"%d. %s (%dd%d + %d)\n",
                i + 1,
                jogador->magia[tipoMagia - 1][i].nameMagia,
                jogador->magia[tipoMagia - 1][i].quantDados,
                jogador->magia[tipoMagia - 1][i].tipoDado,
                jogador->magiaSomaAtributos);
+
+        char *espaco = strstr(texto, " (");
+        char ataque[50];
+        char dados[20];
+        strcpy(dados, espaco + 1);
+        int tamanhoNome = espaco - texto; // posição da substring
+
+        strncpy(ataque, texto, tamanhoNome);   // copia o nome antes de " ("
+        ataque[tamanhoNome] = '\0';
+
+        printf("%s ", ataque);
+        textoColorido(dados,
+            ((strcmp(jogador->magia[tipoMagia - 1][i].tipoMagia, "Cura") == 0) ? "verde" :
+                (strcmp(jogador->magia[tipoMagia - 1][i].tipoMagia, "Defesa") == 0) ? "amarelo" : "vermelho"), "normal");
+
+        snprintf(numero[i], sizeof(numero[i]), "%d", i + 1);
+        possiveisMagias[i] = numero[i];
+
+        if (espaco != NULL) {
+            int tamanho = espaco - texto - 3; // Remove "1. " do começo
+            if (tamanho >= sizeof(parte1)) tamanho = sizeof(parte1) - 1;
+            strncpy(parte1, texto + 3, tamanho);
+            parte1[tamanho] = '\0';
+            strncpy(nome[i], parte1, sizeof(nome[i]) - 1);
+            nome[i][sizeof(nome[i]) - 1] = '\0';
+        }
+        possiveisMagias[i + maxMagias] = nome[i];
+
+        snprintf(completo[i], sizeof(completo[i]), "%d. %s", i + 1, jogador->magia[tipoMagia - 1][i].nameMagia);
+        possiveisMagias[i + (maxMagias * 2)] = completo[i];
     }
-    printf("Digite o numero da magia:\n> ");
-    scanf("%d", &especificoAtaque);
+    printf("Digite o numero %s:\n> ", ((tipoMagia - 1 == 0) ? "do truque" : "da magia"));
+    especificoAtaque = verificarEntrada(maxMagias, maxMagias * 3, possiveisMagias, 1);
 
     if (especificoAtaque == 0) return -1;
-    if (especificoAtaque < 1 || especificoAtaque > maxMagias) {
-        printf("Escolha invalida!\n");
-        goto inicio_menu_magia;
-    }
 
     return especificoAtaque - 1;
 }
 
 // Função responsável por manusear o tipo de dano gerado
 int ataqueJogador(Jogador *jogador) {
-    int tipoAtaque, tipoMagia, index, dano = 0;
+    int tipoAtaque, index, dano = 0;
 
 menu_principal:
     // Exibe o menu principal de ataque (arma ou magia/truque)
     tipoAtaque = menuTipoAtaque(jogador);
-
-    // Se o jogador cancelar (digitar 0), volta ao menu principal
-    if (tipoAtaque == 0) {
-        printf("Voce cancelou o ataque e pode tentar novamente.\n");
-        goto menu_principal;
-    }
 
     // Se o jogador escolheu ataque com arma
     if (tipoAtaque == 1) {
@@ -153,39 +219,23 @@ menu_principal:
 
         dano = somaDados + jogador->arma[index].atributosSomados;
 
-        // Exibe o dano causado e retorna esse valor
-        printf("Dano causado com %s: %d\n", jogador->arma[index].nameArma, dano);
         return dano;
 
-    } else if (tipoAtaque == 2) {
+    } else if (tipoAtaque >= 2) {
     menu_tipo_magia:
-        // Pergunta se será truque (nível 0) ou magia (nível 1+)
-        printf("Escolha se usara um truque ou magia (0 para voltar):\n");
-        printf("1. Truque\n2. Magia\n");
-        printf("Digite o que deseja usar :\n> ");
-        scanf("%d", &tipoMagia);
 
-        // Se quiser voltar, retorna ao menu principal
-        if (tipoMagia == 0) goto menu_principal;
-
-        // Se a escolha for inválida, volta para esse menu
-        if (tipoMagia < 1 || tipoMagia > 2) {
-            printf("Escolha invalida!\n");
-            goto menu_tipo_magia;
-        }
 
         // Mostra o menu de magias do tipo escolhido (truque ou magia)
-        index = menuMagia(jogador, tipoMagia);
+        index = menuMagia(jogador, tipoAtaque - 1);
 
         // Se quiser voltar do menu de magias, retorna ao menu principal
         if (index == -1) goto menu_principal;
 
         // Pega a magia escolhida
-        Magia magia = jogador->magia[tipoMagia - 1][index];
+        Magia magia = jogador->magia[tipoAtaque - 2][index];
 
         // Lógica com base no tipo da magia
         if (strcmp(magia.tipoMagia, "Defesa") == 0) {
-            printf("Voce usou %s e deixou o alvo em desvantagem.\n", magia.nameMagia);
             dano = 0;  // Magia de defesa não causa dano
         } else if (strcmp(magia.tipoMagia, "Cura") == 0) {
             // Calcula a cura da magia (rolando os dados)
@@ -197,18 +247,15 @@ menu_principal:
             dano = somaDados + jogador->magiaSomaAtributos;
 
             jogador->vida += dano;  // Recupera a vida do jogador
-            printf("Voce usou %s e curou %d pontos de vida!\n", magia.nameMagia, dano);
             dano = -1;  // Indica cura com valor negativo
         } else {
+            // Magia ofensiva
             int somaDados = 0;
             for (int i = 0; i < magia.quantDados; i++) {
                 somaDados += (rand() % (magia.tipoDado) + 1);
             }
 
             dano = somaDados + jogador->magiaSomaAtributos;
-
-            // Magia ofensiva
-            printf("Dano causado com %s: %d\n", magia.nameMagia, dano);
         }
 
         return dano;
@@ -220,22 +267,13 @@ menu_principal:
 
 // Função para escolha de raça com bônus específicos
 void escolherRaca(Jogador *jogador) {
-    char repetir;
     int respostaRaca;
 
     printf("Atualmente possui 3 racas disponiveis, sendo elas:\n");
-    do {
-        printf("1. Anao\n2. Elfo\n3. Humano\n");
-        printf("Digite o numero que representa o que voce deseja :\n> ");
-        scanf("%d", &respostaRaca);
-
-        if (respostaRaca < 1 || respostaRaca > 3) {
-            repetir = 'S';
-            printf("Voce escolheu uma raca ainda nao cadastrada!\n");
-        } else {
-            repetir = 'N';
-        }
-    } while (repetir == 'S');
+    printf("1. Anao\n2. Elfo\n3. Humano\n");
+    printf("Digite o numero que representa o que voce deseja :\n> ");
+    char *casosRaca[] = {"1", "2", "3", "Anao", "Elfo", "Humano", "1. Anao", "2. Elfo", "3. Humano"};
+    respostaRaca = verificarEntrada(3, 9, casosRaca, 0);
 
     switch (respostaRaca) {
         case 1:
@@ -264,18 +302,10 @@ void escolherClasse(Jogador *jogador) {
     int respostaClasse;
 
     printf("Atualmente possui 4 classes disponiveis:\n");
-    do {
-        printf("1. Barbaro\n2. Feiticeiro\n3. Mago\n4. Paladino\n");
-        printf("Digite o numero que representa o que voce deseja :\n> ");
-        scanf("%d", &respostaClasse);
-
-        if (respostaClasse < 1 || respostaClasse > 4) {
-            repetir = 'S';
-            printf("Voce escolheu uma classe ainda nao cadastrada!\n");
-        } else {
-            repetir = 'N';
-        }
-    } while (repetir == 'S');
+    printf("1. Barbaro\n2. Feiticeiro\n3. Mago\n4. Paladino\n");
+    printf("Digite o numero que representa o que voce deseja :\n> ");
+    char *casosClasse[] = {"1", "2", "3", "4", "Barbaro", "Feiticeiro", "Mago", "Paladino", "1. Barbaro", "2. Feiticeiro", "3. Mago", "4. Paladino"};
+    respostaClasse = verificarEntrada(4, 12, casosClasse, 0);
 
     // Distribuição de atributos com base na classe
     switch (respostaClasse) {
@@ -328,21 +358,21 @@ void escolherClasse(Jogador *jogador) {
 
 void criarJogador(Jogador *jogador) {
     printf("Digite o nome para o seu personagem:\n> ");
-    fgets(jogador->name, sizeof(jogador->name), stdin);
-    jogador->name[strcspn(jogador->name, "\n")] = '\0'; // remove o último \n posto pelo fgets()
+    entradaDeNomeAceito(jogador->name);
+    limparTela();
     printf("Seja bem vindo %s!\n", jogador->name);
 
     printf("Agora esta na hora de escolher a sua raca!\n");
-    Sleep(1500);
     escolherRaca(jogador);
+    limparTela();
     printf("Parabens, agora voce eh um %s!!!\n", jogador->raca);
 
     printf("Agora esta na hora de voce escolher a sua classe!\n");
-    Sleep(1500);
     escolherClasse(jogador);
     printf("Parabens, agora voce eh um %s!!!\n", jogador->classe);
 
     printf("Agora sera gerado as magias e as armas para voce usar!\n");
+    Sleep(1500);
 
     gerarMagias(jogador);
     gerarArmas(jogador);

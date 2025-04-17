@@ -3,6 +3,21 @@
 #include <string.h>
 #include <windows.h>
 #include "batalha.h"
+#include "../Utils/utils.h"
+
+// Função para alocar a memória dinamicamente para os nomes dos monstros
+void alocarMemoriaPossiveisMonstros(char **possiveisMonstros, int quantMonstros) {
+    for (int i = 0; i < quantMonstros * 2; i++) {
+        possiveisMonstros[i] = (char *)malloc(50 * sizeof(char));  // Aloca 50 bytes para cada string
+    }
+}
+
+// Função para liberar a memória alocada
+void liberarMemoriaPossiveisMonstros(char **possiveisMonstros, int quantMonstros) {
+    for (int i = 0; i < quantMonstros * 2; i++) {
+        free(possiveisMonstros[i]);  // Libera a memória de cada string
+    }
+}
 
 int iniciativa(int iniciativa) {
     return rand() % 20 + iniciativa + 1;
@@ -52,9 +67,15 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
     ordenarOrdemJogada(ordemPrincipal, 2 + quantMonstros);
 
     // Mostrar ordem de batalha
-    printf("\nOrdem de batalha:\n");
+    textoColorido("\nOrdem de batalha:\n", "branco", "negrito");
     for (int i = 0; i < 2 + quantMonstros; i++) {
-        printf("%d. %s - Iniciativa: %d\n", i + 1, ordemPrincipal[i].name, ordemPrincipal[i].iniciativa);
+        char texto[75];
+        snprintf(texto, sizeof(texto), "%d. %s - Iniciativa: %d\n", i + 1, ordemPrincipal[i].name, ordemPrincipal[i].iniciativa);
+        if (strcmp(ordemPrincipal[i].name, jogador->name) == 0 || strcmp(ordemPrincipal[i].name, ajudante->name) == 0) {
+            textoColorido(texto, "verde", "normal");
+        } else {
+            textoColorido(texto, "vermelho", "normal");
+        }
     }
 
     Sleep(2500);
@@ -63,6 +84,7 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
     printf("\n");
     int numMonstroAtacar = 0, numMonstro = 0;
     char ultimaLetra;
+
     while (aindaHaMonstros(monstros, quantMonstros)) {
         for (int i = 0; i < quantMonstros + 2; i++) {
 
@@ -95,12 +117,12 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                     if (numMonstro >= 0 && numMonstro < quantMonstros) {
                         if (monstros[numMonstro]->vida <= 0) continue;
                     }
-               }
+                }
             }
 
             printf("Agora eh a vez do %s!\n", ordemPrincipal[i].name);
 
-            if (strcmp(ordemPrincipal[i].name, jogador->name) == 0) {           // Jogador ataca
+            if (strcmp(ordemPrincipal[i].name, jogador->name) == 0) {   // Player ataca
                 for (int j = 0; j < 1 + (jogador->ataqueExtra == 'S' ? 1 : 0); j++) {
                     if (j > 0) {
                         if (aindaHaMonstros(monstros, quantMonstros) == 0) {
@@ -108,16 +130,55 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                         }
                         printf("\n%s tem ataque extra!!!\n", jogador->name);
                     }
-                    printf("Vida: %d\n", jogador->vida);
+                    printf("Vida: ");
+                    char strVida[10];
+                    snprintf(strVida, sizeof(strVida), "%d\n", jogador->vida);
+                    textoColorido(strVida, "verde", "normal");
                     printf("Existem esses monstros vivos:\n");
+
+                    // Contar monstros vivos
+                    int vivos = 0;
+                    for (int k = 0; k < quantMonstros; k++) {
+                        if (monstros[k]->vida > 0) vivos++;
+                    }
+
+                    // Alocar dinamicamente
+                    char **possiveisMonstros = malloc(sizeof(char *) * vivos * 2);
+
+                    char texto[50];
+                    int idx = 0;
                     for (int k = 0; k < quantMonstros; k++) {
                         if (monstros[k]->vida > 0) {
-                            printf("%s %d\n", monstros[k]->name, k + 1);
+                            snprintf(texto, sizeof(texto), "%s %d", monstros[k]->name, k + 1);
+                            textoColorido(texto, "vermelho", "normal");
+                            printf("\n");
+
+                            // Alocar e copiar número e nome
+                            char *numero = malloc(10);
+                            snprintf(numero, 10, "%d", k + 1);
+                            possiveisMonstros[idx] = numero;
+
+                            possiveisMonstros[idx + vivos] = strdup(texto);
+                            idx++;
                         }
                     }
-                    printf("Escolha um para atacar!\n>");
-                    scanf("%d", &numMonstroAtacar);
-                    playerAtaca(jogador, monstros[numMonstroAtacar - 1]);
+
+                    printf("Escolha um para atacar!\n> ");
+                    numMonstroAtacar = verificarEntrada(vivos, vivos * 2, possiveisMonstros, 0);
+
+                    // Verifica se o monstro está realmente vivo (por segurança extra)
+                    if (monstros[numMonstroAtacar - 1]->vida > 0) {
+                        playerAtaca(jogador, monstros[numMonstroAtacar - 1]);
+                    } else {
+                        printf("Esse monstro ja esta morto! Perdeu o ataque!\n");
+                    }
+
+                    // Liberar memória
+                    for (int k = 0; k < vivos; k++) {
+                        free(possiveisMonstros[k]);
+                        free(possiveisMonstros[k + vivos]);
+                    }
+                    free(possiveisMonstros);
                 }
             } else if (strcmp(ordemPrincipal[i].name, ajudante->name) == 0) {   // Ajudante ataca
                 for (int j = 0; j < 1 + (ajudante->ataqueExtra == 'S' ? 1 : 0); j++) {
@@ -127,7 +188,10 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                         }
                         printf("\n%s tem ataque extra!!!\n", ajudante->name);
                     }
-                    printf("Vida: %d\n", ajudante->vida);
+                    printf("Vida: ");
+                    char strVida[10];
+                    snprintf(strVida, sizeof(strVida), "%d\n", ajudante->vida);
+                    textoColorido(strVida, "verde", "normal");
                     int NMonstro;
                     char estaVivo;
                     do {
@@ -138,7 +202,10 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                             estaVivo = 'S';
                         }
                     } while (estaVivo == 'N');
-                    printf("Alvo : %s %d\n", monstros[NMonstro]->name, NMonstro + 1);
+                    char strAlvo[50];
+                    snprintf(strAlvo, sizeof(strAlvo), "%s %d\n", monstros[NMonstro]->name, NMonstro + 1);
+                    printf("Alvo : ");
+                    textoColorido(strAlvo, "vermelho", "normal");
                     NPCAtaca(ajudante, monstros[NMonstro]);
                 }
             } else {                                                            // Monstro[i] ataca
@@ -152,7 +219,10 @@ void batalhar(Jogador *jogador, Jogador *ajudante, Monstro *monstros[], int quan
                 } else {
                     alvo = jogador;
                 }
-                printf("Alvo : %s\n", alvo->name);
+                char strAlvo[50];
+                snprintf(strAlvo, sizeof(strAlvo), "%s\n", alvo->name);
+                printf("Alvo : ");
+                textoColorido(strAlvo, "vermelho", "normal");
                 monstroAtaca(monstros[numMonstro], alvo);
             }
 

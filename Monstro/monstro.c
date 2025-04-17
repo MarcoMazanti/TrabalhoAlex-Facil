@@ -37,20 +37,16 @@ int ataqueMonstro(Monstro *monstro) {
             repetir = 'N';
 
             if (strcmp(ataque.tipoAtaque, "Defesa") == 0) {
-                printf("O %s usou %s e deixou o alvo em desvantagem.\n", monstro->name, ataque.nomeAtaque);
                 dano = 0;   // Causa debuff
             } else if (strcmp(ataque.tipoAtaque, "Cura") == 0) {
                 int dado = (rand() % (ataque.tipoDado + 1));
                 dano = ataque.quantDado * dado + ataque.atributosSomados;
 
                 monstro->vida += dano;
-                printf("O %s usou %s e curou %d de vida.\n", monstro->name, ataque.nomeAtaque, dano);
                 dano = -1;  // É ignorado
             } else {
                 int dado = (rand() % (ataque.tipoDado + 1));
                 dano = ataque.quantDado * dado + ataque.atributosSomados;
-
-                printf("Dano causado com %s: %d\n", ataque.nomeAtaque, dano);
             }
         }
     }

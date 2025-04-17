@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "ajudante.h"
@@ -67,7 +66,6 @@ int ataqueAjudante(Jogador *ajudante) {
             // Ataca com arma
             int arma = rand() % 2;
             dano = ajudante->arma[arma].quantDados * (rand() % ajudante->arma[arma].quantDados) + ajudante->arma[arma].atributosSomados + 1;
-            printf("Dano causado com %s : %d\n", ajudante->arma[arma].nameArma, dano);
         } else {
             // Ataca com magia
             int tipoMagia = rand() % 2;
@@ -76,7 +74,6 @@ int ataqueAjudante(Jogador *ajudante) {
             Magia magia = ajudante->magia[tipoMagia][numMagia];
 
             if (strcmp(magia.tipoMagia, "Defesa") == 0) {
-                printf("O %s usou %s e deixou o alvo em desvantagem.\n", ajudante->name, magia.nameMagia);
                 dano = 0;
             } else if (strcmp(magia.tipoMagia, "Cura") == 0) {
                 int somaDados = 0;
@@ -87,7 +84,6 @@ int ataqueAjudante(Jogador *ajudante) {
                 dano = somaDados + ajudante->magiaSomaAtributos;
 
                 ajudante->vida += dano;
-                printf("O %s usou %s e curou %d pontos de vida!\n", ajudante->name, magia.nameMagia, dano);
                 dano = -1;
             } else {
                 int somaDados = 0;
@@ -96,7 +92,6 @@ int ataqueAjudante(Jogador *ajudante) {
                 }
 
                 dano = somaDados + ajudante->magiaSomaAtributos;
-                printf("Dano causado com %s : %d\n", magia.nameMagia, dano);
             }
         }
     return dano;
