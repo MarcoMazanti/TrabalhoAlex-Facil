@@ -31,8 +31,8 @@ void entradaDeNomeAceito(char* resposta) {
             break;
         }
 
-        printf("Nome invalido!\n");
-        printf("Digite valores validos :\n> ");
+        textoColorido("Nome Invalido!\n", "vermelho", "normal");
+        printf("Digite um nome valido:\n> ");
     }
 }
 
@@ -50,8 +50,12 @@ int verificarEntrada(int quantidadeAlternativas, int quantidadeCasos, char *caso
             if (strcasecmp(resposta, casos[i]) == 0) {
                 return (i % quantidadeAlternativas) + 1;
             } else if (temVolta == 1 && strcmp(resposta, "0") == 0) {
-                int x = 0;
-                return x;
+                return 0;
+            }
+        }
+        if (quantidadeCasos == 0) {
+            if (strcmp(resposta, "0") == 0) {
+                return 0;
             }
         }
 

@@ -188,6 +188,11 @@ inicio_menu_magia:
         snprintf(completo[i], sizeof(completo[i]), "%d. %s", i + 1, jogador->magia[tipoMagia - 1][i].nameMagia);
         possiveisMagias[i + (maxMagias * 2)] = completo[i];
     }
+    if (maxMagias == 0) {
+        char texto[30];
+        snprintf(texto, sizeof(texto), "Nenhuma %s disponivel\n", (tipoMagia == 1) ? "Truque" : "Magia");
+        textoColorido(texto, "vermelho", "normal");
+    }
     printf("Digite o numero %s:\n> ", ((tipoMagia - 1 == 0) ? "do truque" : "da magia"));
     especificoAtaque = verificarEntrada(maxMagias, maxMagias * 3, possiveisMagias, 1);
 

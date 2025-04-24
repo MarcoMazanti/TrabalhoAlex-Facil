@@ -11,22 +11,22 @@
 			"cmake" : "C:/Users/marco/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe",
 			"cpack" : "C:/Users/marco/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cpack.exe",
 			"ctest" : "C:/Users/marco/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/ctest.exe",
-			"root" : "C:/Users/marco/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30"
+			"root" : "C:/Users/marco/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.31"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
 			"major" : 3,
-			"minor" : 30,
-			"patch" : 5,
-			"string" : "3.30.5",
+			"minor" : 31,
+			"patch" : 6,
+			"string" : "3.31.6",
 			"suffix" : ""
 		}
 	},
 	"objects" : 
 	[
 		{
-			"jsonFile" : "codemodel-v2-878f072b57a13356f7e8.json",
+			"jsonFile" : "codemodel-v2-0dc6826a0f58355749d3.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
@@ -35,7 +35,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-d40770540404da1ac336.json",
+			"jsonFile" : "cache-v2-673eda5dee90a85690d5.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cmakeFiles-v1-5902cb68faaad5e15f24.json",
+			"jsonFile" : "cmakeFiles-v1-bfb3a54a31ff1018e650.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -66,7 +66,7 @@
 	{
 		"cache-v2" : 
 		{
-			"jsonFile" : "cache-v2-d40770540404da1ac336.json",
+			"jsonFile" : "cache-v2-673eda5dee90a85690d5.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -76,7 +76,7 @@
 		},
 		"cmakeFiles-v1" : 
 		{
-			"jsonFile" : "cmakeFiles-v1-5902cb68faaad5e15f24.json",
+			"jsonFile" : "cmakeFiles-v1-bfb3a54a31ff1018e650.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -86,7 +86,7 @@
 		},
 		"codemodel-v2" : 
 		{
-			"jsonFile" : "codemodel-v2-878f072b57a13356f7e8.json",
+			"jsonFile" : "codemodel-v2-0dc6826a0f58355749d3.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
