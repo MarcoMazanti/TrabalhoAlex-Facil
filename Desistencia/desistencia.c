@@ -37,7 +37,7 @@ void desistirInicio(){
 
 void desistirMeio(Jogador *ajudante){
     printf("Durante a viagem vem uma ideia de desistir da aventura por conta do perigo!\n");
-    textoColorido("Voce deside continuar na aventura?\n", "amarelo", "normal");
+    textoColorido("Voce decide continuar na aventura?\n", "amarelo", "normal");
     textoColorido("1. Sim\n", "verde", "normal");
     textoColorido("2. Nao\n", "vermelho", "normal");
     printf("> ");
