@@ -45,17 +45,19 @@ int verificarEntrada(int quantidadeAlternativas, int quantidadeCasos, char *caso
         fgets(resposta, sizeof(resposta), stdin);
         resposta[strcspn(resposta, "\n")] = '\0'; // Remove o \n do final
 
-        for (int i = 0; i < quantidadeCasos; i++) {
-            if (strcmp(casos[i], "") == 0) continue;
-            if (strcasecmp(resposta, casos[i]) == 0) {
-                return (i % quantidadeAlternativas) + 1;
-            } else if (temVolta == 1 && strcmp(resposta, "0") == 0) {
+        if (quantidadeCasos == 0) {
+            if (temVolta == 1 && strcmp(resposta, "0") == 0) {
                 return 0;
             }
-        }
-        if (quantidadeCasos == 0) {
-            if (strcmp(resposta, "0") == 0) {
-                return 0;
+        } else {
+            for (int i = 0; i < quantidadeCasos; i++) {
+                if (strcmp(casos[i], "") == 0) continue;
+                if (strcasecmp(resposta, casos[i]) == 0) {
+                    return (i % quantidadeAlternativas) + 1;
+                }
+                if (temVolta == 1 && strcmp(resposta, "0") == 0) {
+                    return 0;
+                }
             }
         }
 

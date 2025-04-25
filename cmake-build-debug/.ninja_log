@@ -52,3 +52,13 @@
 54	1889	7671592339959869	CMakeFiles/TrabalhoAlexFacilLib.dir/Jogador/jogador.c.obj	223d9f1544396a61
 1889	2022	7671592358309291	libTrabalhoAlexFacilLib.a	5ea24449977a51d6
 2022	2213	7671592359636113	TrabalhoAlexFacil.exe	bc589bd46700eea8
+267	623	7672973708942361	CMakeFiles/TrabalhoAlexFacilLib.dir/Utils/verificarEntrada.c.obj	1847c56aea9cd255
+251	7673	7672973708776255	CMakeFiles/TrabalhoAlexFacilLib.dir/Desistencia/desistencia.c.obj	ec42c5b497950f41
+7673	8079	7672973782997972	libTrabalhoAlexFacilLib.a	5ea24449977a51d6
+8079	8758	7672973787058040	TrabalhoAlexFacil.exe	bc589bd46700eea8
+34	264	7672975013255395	CMakeFiles/TrabalhoAlexFacilLib.dir/Utils/verificarEntrada.c.obj	1847c56aea9cd255
+265	502	7672975015557157	libTrabalhoAlexFacilLib.a	5ea24449977a51d6
+502	834	7672975017936664	TrabalhoAlexFacil.exe	bc589bd46700eea8
+46	305	7672975968119557	CMakeFiles/TrabalhoAlexFacilLib.dir/Utils/verificarEntrada.c.obj	1847c56aea9cd255
+307	558	7672975970732947	libTrabalhoAlexFacilLib.a	5ea24449977a51d6
+558	849	7672975973244615	TrabalhoAlexFacil.exe	bc589bd46700eea8
