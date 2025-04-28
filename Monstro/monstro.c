@@ -39,13 +39,13 @@ int ataqueMonstro(Monstro *monstro) {
             if (strcmp(ataque.tipoAtaque, "Defesa") == 0) {
                 dano = 0;   // Causa debuff
             } else if (strcmp(ataque.tipoAtaque, "Cura") == 0) {
-                int dado = (rand() % (ataque.tipoDado + 1));
+                int dado = (rand() % ataque.tipoDado + 1);
                 dano = ataque.quantDado * dado + ataque.atributosSomados;
 
                 monstro->vida += dano;
                 dano = -1;  // É ignorado
             } else {
-                int dado = (rand() % (ataque.tipoDado + 1));
+                int dado = (rand() % ataque.tipoDado + 1);
                 dano = ataque.quantDado * dado + ataque.atributosSomados;
             }
         }

@@ -219,7 +219,7 @@ menu_principal:
         // Calcula o dano da arma (rolando os dados)
         int somaDados = 0;
         for (int i = 0; i < jogador->arma[index].quantDados; i++) {
-            somaDados += (rand() % (jogador->arma[index].tipoDado + 1));
+            somaDados += (rand() % jogador->arma[index].tipoDado + 1);
         }
 
         dano = somaDados + jogador->arma[index].atributosSomados;
